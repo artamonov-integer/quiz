@@ -1,0 +1,76 @@
+﻿<Window x:Class="Quiz.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Quiz" Height="600" Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Questions">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*" MaxHeight="24" MinHeight="20"/>
+                        <RowDefinition Height="90*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="0">
+                        <Button Name="AddQuestionButton" Content="Add question" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="AddQuestionButton_Click"/>                       
+                    </StackPanel>
+                    <ListBox Name="QuestionsList" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="1"/>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="Participants">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*" MaxHeight="24" MinHeight="20"/>
+                        <RowDefinition Height="90*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="0">
+                        <Button Name="RefreshParticipantsButton" Content="LoadParticipants" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="RefreshParticipantsButton_Click"/>                        
+                    </StackPanel>
+                    <!--<ListBox Name="ParticipantsList" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="1"/>-->
+                    <ListView Name="ParticipantsList" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="1">
+                        <ListView.View>
+                            <GridView>
+                                <GridView.Columns>
+                                    <GridViewColumn Header="Id" Width="40" DisplayMemberBinding="{Binding Path=Id}"></GridViewColumn>
+                                    <GridViewColumn Header="Login" Width="150" DisplayMemberBinding="{Binding Path=Login}"></GridViewColumn>
+                                    <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Path=Name}"></GridViewColumn>
+                                    <GridViewColumn Header="Mail" Width="200">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Mail}" TextDecorations="Underline" Foreground="Blue" Cursor="Hand" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Points" Width="150" DisplayMemberBinding="{Binding Path=Points}"></GridViewColumn>
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="Answers">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*" MaxHeight="24" MinHeight="20"/>
+                        <RowDefinition Height="90*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="0">                    
+                        <Button Name="LoadAnswersList" Content="LoadFromFile" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="LoadAnswersList_Click"/>
+                        <TextBox Name="AnswerTextBox" Height="20" Width="200" KeyUp="AnswerTextBox_KeyUp"/>
+                    </StackPanel>
+                    <ListBox Name="AnswersList" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="1"/>
+                </Grid>
+            </TabItem>
+        </TabControl>        
+    </Grid>
+</Window>
