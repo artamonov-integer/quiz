@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
+using System.Xml;
 
 namespace Quiz
 {
@@ -23,13 +24,15 @@ namespace Quiz
     /// </summary>
     public partial class QuestionControl : UserControl
     {
-        public List<string> answers = null;
+        public List<Answer> answers;
+        public List<Answer> filterAnswers = null;
         public string path = "images/";
         public string id;
-        public QuestionControl(List<string> answers)
+        public QuestionControl(List<Answer> answers)
         {
             InitializeComponent();
             this.answers = answers;
+            this.filterAnswers = new List<Answer>(); 
             this.id = System.Guid.NewGuid().ToString();
         }
 
@@ -37,14 +40,14 @@ namespace Quiz
         {
             if (e.Key == Key.Enter)
             {
-                refreshAnswerComboBox(this.answers);                                
+                refreshAnswerComboBox(filterList(this.FilterTextAnswer.Text, this.answers));                                
             }
         }
 
-        private void refreshAnswerComboBox(List<string> answerList) 
+        private void refreshAnswerComboBox(List<Answer> answerList) 
         {            
             this.AnswerComboBox.Items.Clear();
-            foreach (string answer in answerList) 
+            foreach (Answer answer in answerList) 
             {
                 this.AnswerComboBox.Items.Add(answer);
             }
@@ -111,6 +114,57 @@ namespace Quiz
                     }                    
                 }                                
             }  
+        }
+
+        private List<Answer> filterList(string answerPath, List<Answer> answersList)
+        {
+            List<Answer> filterList = new List<Answer>();
+            foreach (Answer answer in answersList)
+            {
+                if (answer.content.IndexOf(answerPath) >= 0)
+                {
+                    filterList.Add(answer);
+                }
+            }
+            return filterList;
+        }
+    }
+    public class Question 
+    {
+        public string number { get; set; }
+        public string content { get; set; }
+        public Answer answer { get; set; }
+        public string image { get; set; }
+
+        public Question() 
+        {
+
+        }
+
+        public Question(string number, string content, Answer answer, string image)
+        {
+            this.number = number;
+            this.content = content;
+            this.answer = answer;
+            this.image = image;
+        }    
+    }
+    public class Answer 
+    {
+        public string id { get; set; }
+        public string content { get; set; }
+        public Answer() { }
+        public Answer(string id, string content)
+        {
+            this.id = id;
+            this.content = content;
+        }
+        public override string ToString()
+        {
+            if (!string.IsNullOrEmpty(content))
+                return this.content;
+            else
+                return base.ToString();
         }
     }
 }

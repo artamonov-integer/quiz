@@ -22,12 +22,12 @@ namespace Quiz
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<string> answers = null;
+        List<Answer> answers = null;
         List<Participant> participants = null;
         public MainWindow()
         {
             InitializeComponent();
-            this.answers = new List<string>();
+            this.answers = new List<Answer>();
             this.participants = new List<Participant>();
             this.ParticipantsList.ItemsSource = this.participants;
             this.QuestionsList.Items.Add(new QuestionControl(this.answers));
@@ -42,26 +42,40 @@ namespace Quiz
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {
-                this.AnswersList.Items.Clear();
+                //this.AnswersList.Items.Clear();
                 string filename = dlg.FileName;
                 StreamReader sr = new StreamReader(filename);
                 string answer = "";
                 while(!sr.EndOfStream)
                 {
                     answer = sr.ReadLine();
-                    this.AnswersList.Items.Add(answer);
-                    this.answers.Add(answer);
+                    if (!isAlreadyExist(answer))
+                    {
+                        this.AnswersList.Items.Add(answer);
+                        this.answers.Add(new Answer(System.Guid.NewGuid().ToString(), answer));
+                    }
                 }
                 sr.Close();       
             }  
         }
 
-        private List<string> filterList(string answerPath, List<string> answersList) 
+        private bool isAlreadyExist(string content) 
         {
-            List<string> filterList = new List<string>();
-            foreach(string answer in answersList)
+            bool isExist = false;
+            foreach(Answer answer in answers)
             {
-                if (answer.IndexOf(answerPath) >= 0) 
+                if (content.Equals(answer.content))
+                    isExist = true;
+            }
+            return isExist;
+        }
+
+        private List<Answer> filterList(string answerPath, List<Answer> answersList) 
+        {
+            List<Answer> filterList = new List<Answer>();
+            foreach(Answer answer in answersList)
+            {
+                if (answer.content.IndexOf(answerPath) >= 0) 
                 {
                     filterList.Add(answer);
                 }
@@ -69,10 +83,10 @@ namespace Quiz
             return filterList;
         }
 
-        private void refreshAnswersListBox(List<string> answersList) 
+        private void refreshAnswersListBox(List<Answer> answersList) 
         {
             this.AnswersList.Items.Clear();
-            foreach (string answer in answersList)
+            foreach (Answer answer in answersList)
             {
                 this.AnswersList.Items.Add(answer);
             }
@@ -117,6 +131,44 @@ namespace Quiz
             return participantList;
         }
 
+        private List<Answer> loadAnswers() 
+        {
+            List<Answer> loadedAnswers = new List<Answer>();
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load("answers.xml");
+            foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
+            {
+                // перебираем все атрибуты элемента
+                Answer answer = new Answer();
+                foreach (XmlAttribute attr in table.Attributes)
+                {
+                    if (attr.Name.Equals("id"))
+                        answer.id = attr.Value;
+                    else if (attr.Name.Equals("content"))
+                        answer.content = attr.Value;                    
+                }                
+                loadedAnswers.Add(answer);
+            }
+            return loadedAnswers;
+        }
+
+        private void saveAnswers() 
+        {
+
+        }
+
+        private void refreshQuestionsListBox() 
+        {
+            foreach (QuestionControl qc in QuestionsList.Items) 
+            {
+                qc.answers = this.answers;
+            }
+        }
+
+        private void saveQuestions() {
+            
+        }
+
         private void AnswerTextBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter) 
@@ -135,6 +187,18 @@ namespace Quiz
         {
             QuestionControl qc = new QuestionControl(this.answers);            
             this.QuestionsList.Items.Add(qc);            
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.answers = loadAnswers();
+            refreshAnswersListBox(this.answers);
+            refreshQuestionsListBox();
         }
     }
     class Participant
