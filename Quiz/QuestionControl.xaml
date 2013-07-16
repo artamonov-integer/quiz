@@ -4,22 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"            
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="800">
+             d:DesignHeight="50" d:DesignWidth="820">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20*" MinWidth="30"/>
-            <ColumnDefinition Width="100*" MinWidth="300" MaxWidth="300"/>
+            <ColumnDefinition Width="100*" MinWidth="300"/>
             <ColumnDefinition Width="100*" MinWidth="300"/>
             <ColumnDefinition Width="100*" MinWidth="100"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*" MaxHeight="100" MinHeight="50"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0"  Name="NumLabel" VerticalAlignment="Center" HorizontalAlignment="Center" Content="1"/>
+        <TextBox Grid.Row="0" Grid.Column="0"  Name="NumTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" Text="1"/>
         <TextBox Grid.Row="0" Grid.Column="1" Name="QuestionTextBox" TextWrapping="Wrap" AcceptsReturn="True" MaxHeight="50" MinWidth="300" MaxWidth="300" VerticalScrollBarVisibility="Visible"/>
         <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
-            <TextBox Name="FilterTextAnswer" HorizontalAlignment="Stretch" Margin="2" KeyUp="FilterTextAnswer_KeyUp"/>
-            <ComboBox Name="AnswerComboBox" HorizontalAlignment="Stretch" Margin="2" SelectionChanged="AnswerComboBox_SelectionChanged"/>
+            <TextBox Name="FilterTextAnswer" HorizontalAlignment="Stretch" MinWidth="300" MaxWidth="300" Margin="2" KeyUp="FilterTextAnswer_KeyUp"/>
+            <ComboBox Name="AnswerComboBox" HorizontalAlignment="Stretch" MinWidth="300" MaxWidth="300" Margin="2" SelectionChanged="AnswerComboBox_SelectionChanged"/>
         </StackPanel>
         <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Horizontal">
             <Button Name="AddImageButton" Content="Add image" HorizontalAlignment="Stretch" Margin="2" Click="AddImageButton_Click" />

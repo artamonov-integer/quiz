@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq; 
 
 namespace Quiz
 {
@@ -24,13 +25,15 @@ namespace Quiz
     {
         List<Answer> answers = null;
         List<Participant> participants = null;
+        List<Question> questions = null;
         public MainWindow()
         {
             InitializeComponent();
             this.answers = new List<Answer>();
             this.participants = new List<Participant>();
+            this.questions = new List<Question>();
             this.ParticipantsList.ItemsSource = this.participants;
-            this.QuestionsList.Items.Add(new QuestionControl(this.answers));
+            //this.QuestionsList.Items.Add(new QuestionControl(this.answers));
         }        
 
         private void LoadAnswersList_Click(object sender, RoutedEventArgs e)
@@ -42,20 +45,31 @@ namespace Quiz
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(System.IO.File.ReadAllText("answers.xml"));
+
+                XmlElement root = doc.DocumentElement;
+                
                 //this.AnswersList.Items.Clear();
                 string filename = dlg.FileName;
                 StreamReader sr = new StreamReader(filename);
-                string answer = "";
+                string answerStr = "";
                 while(!sr.EndOfStream)
                 {
-                    answer = sr.ReadLine();
-                    if (!isAlreadyExist(answer))
+                    answerStr = sr.ReadLine();
+                    if (!isAlreadyExist(answerStr))
                     {
-                        this.AnswersList.Items.Add(answer);
-                        this.answers.Add(new Answer(System.Guid.NewGuid().ToString(), answer));
+                        Answer answer = new Answer(System.Guid.NewGuid().ToString(), answerStr);
+                        this.AnswersList.Items.Add(answerStr);
+                        this.answers.Add(answer);
+                        XmlElement param = doc.CreateElement("answer");
+                        param.SetAttribute("id", answer.id);
+                        param.SetAttribute("content", answer.content);
+                        root.AppendChild(param);
                     }
                 }
-                sr.Close();       
+                sr.Close();
+                doc.Save("answers.xml");
             }  
         }
 
@@ -152,21 +166,90 @@ namespace Quiz
             return loadedAnswers;
         }
 
-        private void saveAnswers() 
+        private List<Question> loadQuestions()
         {
-
+            List<Question> loadedQuestions = new List<Question>();
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load("questions.xml");
+            foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
+            {
+                // перебираем все атрибуты элемента
+                Question question = new Question();
+                foreach (XmlAttribute attr in table.Attributes)
+                {
+                    if (attr.Name.Equals("number"))
+                        question.number = attr.Value;
+                    else if (attr.Name.Equals("content"))
+                        question.content = attr.Value;
+                    else if (attr.Name.Equals("image"))
+                        question.image = attr.Value;
+                    else if (attr.Name.Equals("answerId"))
+                        question.answerId = attr.Value;
+                    else if (attr.Name.Equals("answerContent"))
+                        question.answerContent = attr.Value;
+                }
+                loadedQuestions.Add(question);
+            }
+            return loadedQuestions;
         }
+
+        /*private void saveAnswers() 
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(System.IO.File.ReadAllText("answers.xml"));                        
+            XmlElement root = doc.DocumentElement;            
+
+            foreach(Answer answer in this.answers)
+            {
+                XmlElement param = doc.CreateElement("answer");
+                param.SetAttribute("id", answer.id);
+                param.SetAttribute("content", answer.content);
+                root.AppendChild(param);                
+            }
+            doc.Save("answers.xml");
+        }*/
 
         private void refreshQuestionsListBox() 
         {
+            foreach(Question question in questions)
+            {
+                QuestionControl qc = new QuestionControl(this.answers);
+                qc.setQuestion(question);
+                this.QuestionsList.Items.Add(qc);
+            }
             foreach (QuestionControl qc in QuestionsList.Items) 
             {
                 qc.answers = this.answers;
             }
         }
 
-        private void saveQuestions() {
-            
+        private void saveQuestions() 
+        {
+            XmlTextWriter textWritter = new XmlTextWriter("questions.xml", Encoding.UTF8);
+            textWritter.WriteStartDocument();
+            textWritter.WriteStartElement("body");
+            textWritter.WriteEndElement();
+            textWritter.Close();
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load("questions.xml");
+            XmlElement root = doc.DocumentElement;
+            foreach (QuestionControl qc in QuestionsList.Items)
+            {
+                qc.saveQuestion();
+                Question question = qc.question;
+                if (question != null) 
+                {
+                    XmlElement questionElement = doc.CreateElement("question");
+                    questionElement.SetAttribute("number", question.number);
+                    questionElement.SetAttribute("content", question.content);
+                    questionElement.SetAttribute("image", question.image);
+                    questionElement.SetAttribute("answerId", question.answerId);
+                    questionElement.SetAttribute("answerContent", question.answerContent);
+                    root.AppendChild(questionElement);                    
+                }
+            }
+            doc.Save("questions.xml");           
         }
 
         private void AnswerTextBox_KeyUp(object sender, KeyEventArgs e)
@@ -189,16 +272,47 @@ namespace Quiz
             this.QuestionsList.Items.Add(qc);            
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void QuestionsSaveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            saveQuestions();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.answers = loadAnswers();
             refreshAnswersListBox(this.answers);
+            this.questions = loadQuestions();
             refreshQuestionsListBox();
+        }
+
+        private void AddAnswerButtom_Click(object sender, RoutedEventArgs e)
+        {
+            if(!string.IsNullOrEmpty(this.AnswerTextBox.Text))
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(System.IO.File.ReadAllText("answers.xml"));
+                XmlElement root = doc.DocumentElement;
+                string answerStr = this.AnswerTextBox.Text;
+                if (!isAlreadyExist(answerStr))
+                {
+                    Answer answer = new Answer(System.Guid.NewGuid().ToString(), answerStr);
+                    this.AnswersList.Items.Add(answerStr);
+                    this.answers.Add(answer);
+                    XmlElement param = doc.CreateElement("answer");
+                    param.SetAttribute("id", answer.id);
+                    param.SetAttribute("content", answer.content);
+                    root.AppendChild(param);
+                }                   
+                doc.Save("answers.xml");            
+            }
+        }
+
+        private void RemoveQuestionButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.QuestionsList.SelectedItem != null) 
+            {
+                this.QuestionsList.Items.Remove(this.QuestionsList.SelectedItem);
+            }
         }
     }
     class Participant

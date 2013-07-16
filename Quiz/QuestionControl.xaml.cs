@@ -27,6 +27,7 @@ namespace Quiz
         public List<Answer> answers;
         public List<Answer> filterAnswers = null;
         public string path = "images/";
+        public Question question;
         public string id;
         public QuestionControl(List<Answer> answers)
         {
@@ -34,6 +35,7 @@ namespace Quiz
             this.answers = answers;
             this.filterAnswers = new List<Answer>(); 
             this.id = System.Guid.NewGuid().ToString();
+            this.question = new Question();
         }
 
         private void FilterTextAnswer_KeyUp(object sender, KeyEventArgs e)
@@ -57,7 +59,10 @@ namespace Quiz
         {
             if (this.AnswerComboBox.SelectedItem != null) 
             {
-                this.FilterTextAnswer.Text = (string) this.AnswerComboBox.SelectedItem;
+                Answer answer = ((Answer)this.AnswerComboBox.SelectedItem);
+                this.FilterTextAnswer.Text = answer.content;
+                this.question.answerId = answer.id;
+                this.question.answerContent = answer.content;
             }
         }
 
@@ -65,7 +70,7 @@ namespace Quiz
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.DefaultExt = ".png";
-            dlg.Filter = "Image files|*.png";
+            dlg.Filter = "Image files|*.png;*.jpg";
 
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
@@ -96,16 +101,24 @@ namespace Quiz
 
                             //write
                             try
-                            {                                
+                            {
+                                this.id = System.Guid.NewGuid().ToString();
                                 System.IO.FileStream fs = new System.IO.FileStream(path + this.id + extention, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Write);
                                 fs.Seek(0, System.IO.SeekOrigin.Begin);
                                 fs.Write(bytes, 0, bytes.Length); // запись массива байт
                                 fs.Flush();
                                 fs.Dispose(); // освобождаем ресурсы                                
                                 fs.Close();
+
+                                /*BitmapImage bitmap = new BitmapImage();
+                                bitmap.BeginInit();
+                                bitmap.UriSource = new Uri(fileName);
+                                bitmap.EndInit();
+                                QuestionImage.Source = bitmap;*/
+
                                 ImageSourceConverter converter = new ImageSourceConverter();
-                                this.QuestionImage.Source = (ImageSource)converter.ConvertFromString(path + this.id + extention);                                
-                                //this.QuestionImage.
+                                this.QuestionImage.Source = (ImageSource)converter.ConvertFromString(path + this.id + extention);
+                                this.question.image = path + this.id + extention;
                             }
                             catch (Exception exc) {
                                 this.QuestionTextBox.Text = exc.ToString();
@@ -128,12 +141,34 @@ namespace Quiz
             }
             return filterList;
         }
+
+        public void setQuestion(Question question)
+        {
+            this.question = question;
+            this.QuestionTextBox.Text = question.content;
+            this.FilterTextAnswer.Text = question.answerContent;
+            this.NumTextBox.Text = question.number;
+            ImageSourceConverter converter = new ImageSourceConverter();
+            this.QuestionImage.Source = (ImageSource)converter.ConvertFromString(question.image);
+        }
+
+        private void addImage(string fileName) 
+        {
+
+        }
+
+        public void saveQuestion() 
+        {
+            this.question.content = this.QuestionTextBox.Text;
+            this.question.number = this.NumTextBox.Text;
+        }
     }
     public class Question 
     {
         public string number { get; set; }
         public string content { get; set; }
-        public Answer answer { get; set; }
+        public string answerId { get; set; }
+        public string answerContent { get; set; }
         public string image { get; set; }
 
         public Question() 
@@ -141,11 +176,12 @@ namespace Quiz
 
         }
 
-        public Question(string number, string content, Answer answer, string image)
+        public Question(string number, string content, string answerId, string answerContent, string image)
         {
             this.number = number;
             this.content = content;
-            this.answer = answer;
+            this.answerId = answerId;
+            this.answerContent = answerContent;
             this.image = image;
         }    
     }
