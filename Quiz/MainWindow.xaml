@@ -69,6 +69,7 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="0">                    
                         <Button Name="LoadAnswersList" Content="Load From File" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="LoadAnswersList_Click"/>
                         <Button Name="AddAnswerButton" Content="Add answer" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="AddAnswerButtom_Click"/>
+                        <Button Name="TestButton" Content="Test" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="TestButtom_Click"/>
                         <TextBox Name="AnswerTextBox" Height="20" Width="200" KeyUp="AnswerTextBox_KeyUp"/>
                     </StackPanel>
                     <ListBox Name="AnswersList" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="1"/>

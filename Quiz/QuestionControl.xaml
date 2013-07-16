@@ -23,7 +23,7 @@
         </StackPanel>
         <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Horizontal">
             <Button Name="AddImageButton" Content="Add image" HorizontalAlignment="Stretch" Margin="2" Click="AddImageButton_Click" />
-            <Image Name="QuestionImage" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" MaxHeight="50" MaxWidth="50"/>
+            <Image Name="QuestionImage" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" MaxHeight="50" MaxWidth="50" MouseDown="QuestionImageClick" />
         </StackPanel>
     </Grid>
 </UserControl>

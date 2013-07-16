@@ -40,7 +40,7 @@ namespace Quiz
 
         private void FilterTextAnswer_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            //if (e.Key == Key.Enter)
             {
                 refreshAnswerComboBox(filterList(this.FilterTextAnswer.Text, this.answers));                                
             }
@@ -161,6 +161,19 @@ namespace Quiz
         {
             this.question.content = this.QuestionTextBox.Text;
             this.question.number = this.NumTextBox.Text;
+        }
+
+        private void QuestionImageClick(object sender, MouseButtonEventArgs e)
+        {
+            var image = new Image { Source = ((Image)sender).Source, Width = 400, Stretch = Stretch.Uniform };
+            var stack = new StackPanel {HorizontalAlignment = System.Windows.HorizontalAlignment.Center};
+            var closeButton = new Button() { Content = "Закрыть", Width = 120, Height = 30, Margin = new Thickness(10) };
+            var win = new Window { Content = stack, Width = 400, Height = 400, WindowStartupLocation = WindowStartupLocation.CenterOwner};
+            stack.Children.Add(image);
+            stack.Children.Add(closeButton);
+            closeButton.Click += (s, ee) => win.Close();
+            win.ShowDialog();
+            win.Focus();
         }
     }
     public class Question 

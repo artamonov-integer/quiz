@@ -14,7 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Xml;
-using System.Xml.Linq; 
+using System.Xml.Linq;
+using System.Net;
 
 namespace Quiz
 {
@@ -23,6 +24,8 @@ namespace Quiz
     /// </summary>
     public partial class MainWindow : Window
     {
+        string host = null;
+        string port = null;
         List<Answer> answers = null;
         List<Participant> participants = null;
         List<Question> questions = null;
@@ -254,7 +257,7 @@ namespace Quiz
 
         private void AnswerTextBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter) 
+            //if (e.Key == Key.Enter) 
             {
                 refreshAnswersListBox(filterList(this.AnswerTextBox.Text, this.answers));
             }
@@ -283,6 +286,7 @@ namespace Quiz
             refreshAnswersListBox(this.answers);
             this.questions = loadQuestions();
             refreshQuestionsListBox();
+            loadConfig();
         }
 
         private void AddAnswerButtom_Click(object sender, RoutedEventArgs e)
@@ -313,6 +317,76 @@ namespace Quiz
             {
                 this.QuestionsList.Items.Remove(this.QuestionsList.SelectedItem);
             }
+        }
+
+        private void sortAnswerList() 
+        {
+
+        }
+
+        private void loadConfig() 
+        {
+            StreamReader sr = null;
+            try
+            {
+                sr = new StreamReader("config.txt");
+                while (!sr.EndOfStream)
+                {
+                    string conf = sr.ReadLine();
+                    int index = conf.IndexOf('=');
+                    if(index > 0){
+                        string confName = conf.Substring(0,index).Trim();
+                        string value = conf.Substring(index+1).Trim();
+                        if (confName.Equals("port"))
+                            this.port = value;
+                        else if (confName.Equals("host"))
+                            this.host = value;
+                    }
+                }                
+            }
+            catch (FileNotFoundException ex)
+            {
+                MessageBox.Show("Config file not found!");
+            }
+            finally 
+            {
+                sr.Close();
+            }
+        }
+
+        public XmlDocument answerListToXml(List<Answer> answerList) 
+        {
+            XmlDocument doc = new XmlDocument();
+            XmlElement root = doc.CreateElement("body");            
+            foreach (Answer answer in answerList)
+            {
+                XmlElement param = doc.CreateElement("answer");
+                param.SetAttribute("id", answer.id);
+                param.SetAttribute("content", answer.content);
+                root.AppendChild(param);
+            }
+            doc.AppendChild(root);
+            return doc;
+        }
+
+        private void TestButtom_Click(object sender, RoutedEventArgs e)
+        {
+            WebRequest request = WebRequest.Create("http://"+host+":"+port+"/Default.aspx");
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.Method = "POST";
+            XmlDocument data = answerListToXml(this.answers);
+            
+
+            byte[] bytes = Encoding.UTF8.GetBytes("Hello");
+            using (var newStream = request.GetRequestStream())
+            {
+                newStream.Write(bytes, 0, bytes.Length);
+                //data.Save(newStream);
+                newStream.Close();
+            }
+            
+            WebResponse response = request.GetResponse();
+            response.Close(); 
         }
     }
     class Participant
