@@ -372,12 +372,16 @@ namespace Quiz
         private void TestButtom_Click(object sender, RoutedEventArgs e)
         {
             WebRequest request = WebRequest.Create("http://"+host+":"+port+"/Default.aspx");
-            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentType = "text/xml";
             request.Method = "POST";
             XmlDocument data = answerListToXml(this.answers);
-            
-
-            byte[] bytes = Encoding.UTF8.GetBytes("Hello");
+            StringWriter sw = new StringWriter();
+            XmlTextWriter tx = new XmlTextWriter(sw);
+            data.WriteTo(tx);
+            string str = sw.ToString();
+            sw.Close();
+            tx.Close();
+            byte[] bytes = Encoding.UTF8.GetBytes(str);
             using (var newStream = request.GetRequestStream())
             {
                 newStream.Write(bytes, 0, bytes.Length);

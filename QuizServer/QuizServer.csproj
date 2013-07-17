@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="GetParticipants.aspx" />
+    <Content Include="GetQuestions.aspx" />
     <Content Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -63,7 +65,22 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GetParticipants.aspx.cs">
+      <DependentUpon>GetParticipants.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetParticipants.aspx.designer.cs">
+      <DependentUpon>GetParticipants.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GetQuestions.aspx.cs">
+      <DependentUpon>GetQuestions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetQuestions.aspx.designer.cs">
+      <DependentUpon>GetQuestions.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Singleton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
