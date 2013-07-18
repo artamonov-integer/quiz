@@ -16,6 +16,10 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Net;
+using System.Drawing;
+//using System.Drawing.Image;
+using System.Collections.Specialized;
+using System.Drawing.Imaging;
 
 namespace Quiz
 {
@@ -37,6 +41,8 @@ namespace Quiz
             this.questions = new List<Question>();
             this.ParticipantsList.ItemsSource = this.participants;
             //this.QuestionsList.Items.Add(new QuestionControl(this.answers));
+            ImageSourceConverter converter = new ImageSourceConverter();
+            //this.TestImage.Source = (ImageSource)converter.ConvertFromString(@"https://http://localhost:1753/Default.aspx");            
         }        
 
         private void LoadAnswersList_Click(object sender, RoutedEventArgs e)
@@ -48,31 +54,38 @@ namespace Quiz
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {
-                XmlDocument doc = new XmlDocument();
+                /*XmlDocument doc = new XmlDocument();
                 doc.LoadXml(System.IO.File.ReadAllText("answers.xml"));
 
                 XmlElement root = doc.DocumentElement;
                 
                 //this.AnswersList.Items.Clear();
+                */
+                List<Answer> answerList = new List<Answer>();
                 string filename = dlg.FileName;
                 StreamReader sr = new StreamReader(filename);
                 string answerStr = "";
                 while(!sr.EndOfStream)
                 {
                     answerStr = sr.ReadLine();
-                    if (!isAlreadyExist(answerStr))
-                    {
+                    //if (!isAlreadyExist(answerStr))
+                    //{
                         Answer answer = new Answer(System.Guid.NewGuid().ToString(), answerStr);
-                        this.AnswersList.Items.Add(answerStr);
-                        this.answers.Add(answer);
-                        XmlElement param = doc.CreateElement("answer");
-                        param.SetAttribute("id", answer.id);
-                        param.SetAttribute("content", answer.content);
-                        root.AppendChild(param);
-                    }
+                        //this.AnswersList.Items.Add(answerStr);
+                        //this.answers.Add(answer);
+                        answerList.Add(answer);
+                        //XmlElement param = doc.CreateElement("answer");
+                        //param.SetAttribute("id", answer.id);
+                        //param.SetAttribute("content", answer.content);
+                        //root.AppendChild(param);
+                    //}
                 }
                 sr.Close();
-                doc.Save("answers.xml");
+                saveAnswers(answerList);
+                loadAnswers(this.answers);
+                refreshAnswersListBox(this.answers);
+                
+                //doc.Save("answers.xml");
             }  
         }
 
@@ -125,7 +138,16 @@ namespace Quiz
         {
             List<Participant> participantList = new List<Participant>();
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load("participants.xml");
+            WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/GetParticipants.aspx");
+            WebResponse response = request.GetResponse();
+            //byte[] bytes = new byte[response.GetResponseStream().Length];
+            //int i = response.GetResponseStream.Read(bytes, 0, bytes.Length);
+            //System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
+            //string str = enc.GetString(bytes);
+            xmlDoc.Load(response.GetResponseStream());
+            response.Close();
+
+            //xmlDoc.Load("participants.xml");
             foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
             {
                 // перебираем все атрибуты элемента
@@ -133,7 +155,7 @@ namespace Quiz
                 foreach (XmlAttribute attr in table.Attributes)
                 {                    
                     if (attr.Name.Equals("id"))
-                        participant.Id = Convert.ToInt32(attr.Value);
+                        participant.Id = attr.Value;
                     else if (attr.Name.Equals("name"))
                         participant.Name = attr.Value;
                     else if (attr.Name.Equals("login"))
@@ -148,11 +170,14 @@ namespace Quiz
             return participantList;
         }
 
-        private List<Answer> loadAnswers() 
+        private List<Answer> loadAnswers(List<Answer> answerList) 
         {
-            List<Answer> loadedAnswers = new List<Answer>();
+            //List<Answer> loadedAnswers = new List<Answer>();
+            answerList.Clear();
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load("answers.xml");
+            WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/GetAnswers.aspx");
+            WebResponse response = request.GetResponse();
+            xmlDoc.Load(response.GetResponseStream());
             foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
             {
                 // перебираем все атрибуты элемента
@@ -163,17 +188,20 @@ namespace Quiz
                         answer.id = attr.Value;
                     else if (attr.Name.Equals("content"))
                         answer.content = attr.Value;                    
-                }                
-                loadedAnswers.Add(answer);
+                }
+                answerList.Add(answer);
             }
-            return loadedAnswers;
+            return answerList;
         }
 
         private List<Question> loadQuestions()
         {
             List<Question> loadedQuestions = new List<Question>();
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load("questions.xml");
+            WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/GetQuestions.aspx");
+            WebResponse response = request.GetResponse();
+            xmlDoc.Load(response.GetResponseStream());
+            //xmlDoc.Load("questions.xml");
             foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
             {
                 // перебираем все атрибуты элемента
@@ -214,9 +242,9 @@ namespace Quiz
 
         private void refreshQuestionsListBox() 
         {
-            foreach(Question question in questions)
+            foreach(Question question in this.questions)
             {
-                QuestionControl qc = new QuestionControl(this.answers);
+                QuestionControl qc = new QuestionControl(this.answers, this.host, this.port);
                 qc.setQuestion(question);
                 this.QuestionsList.Items.Add(qc);
             }
@@ -271,7 +299,7 @@ namespace Quiz
 
         private void AddQuestionButton_Click(object sender, RoutedEventArgs e)
         {
-            QuestionControl qc = new QuestionControl(this.answers);            
+            QuestionControl qc = new QuestionControl(this.answers, this.host, this.port);            
             this.QuestionsList.Items.Add(qc);            
         }
 
@@ -282,32 +310,36 @@ namespace Quiz
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.answers = loadAnswers();
+            loadConfig();
+            loadAnswers(this.answers);
             refreshAnswersListBox(this.answers);
             this.questions = loadQuestions();
-            refreshQuestionsListBox();
-            loadConfig();
+            refreshQuestionsListBox();            
         }
 
         private void AddAnswerButtom_Click(object sender, RoutedEventArgs e)
         {
             if(!string.IsNullOrEmpty(this.AnswerTextBox.Text))
             {
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(System.IO.File.ReadAllText("answers.xml"));
-                XmlElement root = doc.DocumentElement;
+                //XmlDocument doc = new XmlDocument();
+                //doc.LoadXml(System.IO.File.ReadAllText("answers.xml"));
+                //XmlElement root = doc.DocumentElement;
+                List<Answer> answerList = new List<Answer>();
                 string answerStr = this.AnswerTextBox.Text;
-                if (!isAlreadyExist(answerStr))
-                {
+                //if (!isAlreadyExist(answerStr))
+                //{
                     Answer answer = new Answer(System.Guid.NewGuid().ToString(), answerStr);
-                    this.AnswersList.Items.Add(answerStr);
-                    this.answers.Add(answer);
-                    XmlElement param = doc.CreateElement("answer");
-                    param.SetAttribute("id", answer.id);
-                    param.SetAttribute("content", answer.content);
-                    root.AppendChild(param);
-                }                   
-                doc.Save("answers.xml");            
+                    //this.AnswersList.Items.Add(answerStr);
+                    answerList.Add(answer);
+                    //XmlElement param = doc.CreateElement("answer");
+                    //param.SetAttribute("id", answer.id);
+                    //param.SetAttribute("content", answer.content);
+                    //root.AppendChild(param);
+                //}                   
+                //doc.Save("answers.xml");
+                    saveAnswers(answerList);
+                    loadAnswers(this.answers);
+                refreshAnswersListBox(this.answers);
             }
         }
 
@@ -369,9 +401,32 @@ namespace Quiz
             return doc;
         }
 
+        private void saveAnswers(List<Answer> answerList) 
+        {
+            WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/AddAnswer.aspx");
+            request.ContentType = "text/xml";
+            request.Method = "POST";
+            XmlDocument data = answerListToXml(answerList);
+            StringWriter sw = new StringWriter();
+            XmlTextWriter tx = new XmlTextWriter(sw);
+            data.WriteTo(tx);
+            string str = sw.ToString();
+            sw.Close();
+            tx.Close();
+            byte[] bytes = Encoding.UTF8.GetBytes(str);
+            using (var newStream = request.GetRequestStream())
+            {
+                newStream.Write(bytes, 0, bytes.Length);
+                newStream.Close();
+            }
+
+            WebResponse response = request.GetResponse();
+            response.Close();
+        }
+
         private void TestButtom_Click(object sender, RoutedEventArgs e)
         {
-            WebRequest request = WebRequest.Create("http://"+host+":"+port+"/Default.aspx");
+            WebRequest request = WebRequest.Create("http://"+host+":"+port+"/AddAnswer.aspx");
             request.ContentType = "text/xml";
             request.Method = "POST";
             XmlDocument data = answerListToXml(this.answers);
@@ -390,7 +445,41 @@ namespace Quiz
             }
             
             WebResponse response = request.GetResponse();
-            response.Close(); 
+            response.Close();
+
+            /*
+            //image save
+            NameValueCollection nvc = new NameValueCollection();
+            //nvc.Add("user", "...");
+            //nvc.Add("passwd", "...");
+            WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/SaveImage.aspx?n="+"ff.jpg");
+            request.ContentType = "image/png";
+            request.Method = "POST";            
+
+
+            using (MemoryStream str = new MemoryStream())
+            {
+                Bitmap bmp = new Bitmap(@"picture.jpg");
+                bmp.Save(str, ImageFormat.Jpeg);
+                byte[] png = str.ToArray();
+                using (var newStream = request.GetRequestStream())
+                {
+                    newStream.Write(png, 0, png.Length);
+                    //data.Save(newStream);
+                    newStream.Close();
+                }
+
+                //XDocument result = Loader.HttpUploadFile("http://" + host + ":" + port + "/Default.aspx", png, "userfile", "image/png", nvc);
+                //string res = (string)result.Root.Element("url1") + "\n\n" + result.Root.Element("url2");
+                //Clipboard.SetText(result.ToString());
+            }
+            WebResponse response = request.GetResponse();
+            response.Close();
+
+            //take image thref
+            /*WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/Default.aspx");
+            WebResponse response = request.GetResponse();
+            response.Close();*/
         }
     }
     class Participant
@@ -399,14 +488,14 @@ namespace Quiz
         public string Mail { get; set; }
         public string Name { get; set; }
         public int Points { get; set; }
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public Participant() 
         {
 
         }
 
-        public Participant(string Login, string Name, string Mail, int Points, int Id)
+        public Participant(string Login, string Name, string Mail, int Points, string Id)
         {
             this.Login = Login;
             this.Name = Name;

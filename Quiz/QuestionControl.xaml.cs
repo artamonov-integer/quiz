@@ -16,6 +16,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.Xml;
+using System.Net;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Quiz
 {
@@ -29,13 +32,17 @@ namespace Quiz
         public string path = "images/";
         public Question question;
         public string id;
-        public QuestionControl(List<Answer> answers)
+        string host = null;
+        string port = null;
+        public QuestionControl(List<Answer> answers, string host, string port)
         {
             InitializeComponent();
             this.answers = answers;
             this.filterAnswers = new List<Answer>(); 
             this.id = System.Guid.NewGuid().ToString();
             this.question = new Question();
+            this.host = host;
+            this.port = port;
         }
 
         private void FilterTextAnswer_KeyUp(object sender, KeyEventArgs e)
@@ -90,34 +97,28 @@ namespace Quiz
                         extention = fileName.Substring(index);
                         if (!string.IsNullOrEmpty(extention))
                         {
-                            //read
-                            Byte[] bytes = new byte[stream.Length];
-                            int i;
-                            //for (i = 0; i < stream.Length - 1; i++)
-                            //{
-                                stream.Read((byte[])bytes, 0, (int)stream.Length);
-                            //}
-                            stream.Close();
-
-                            //write
                             try
                             {
                                 this.id = System.Guid.NewGuid().ToString();
-                                System.IO.FileStream fs = new System.IO.FileStream(path + this.id + extention, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Write);
-                                fs.Seek(0, System.IO.SeekOrigin.Begin);
-                                fs.Write(bytes, 0, bytes.Length); // запись массива байт
-                                fs.Flush();
-                                fs.Dispose(); // освобождаем ресурсы                                
-                                fs.Close();
-
-                                /*BitmapImage bitmap = new BitmapImage();
-                                bitmap.BeginInit();
-                                bitmap.UriSource = new Uri(fileName);
-                                bitmap.EndInit();
-                                QuestionImage.Source = bitmap;*/
+                                WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/SaveImage.aspx?n=" + this.id + extention);
+                                request.ContentType = "image/png";
+                                request.Method = "POST";
+                                using (MemoryStream str = new MemoryStream())
+                                {
+                                    Bitmap bmp = new Bitmap(stream);
+                                    bmp.Save(str, ImageFormat.Jpeg);
+                                    byte[] png = str.ToArray();
+                                    using (var newStream = request.GetRequestStream())
+                                    {
+                                        newStream.Write(png, 0, png.Length);
+                                        newStream.Close();
+                                    }
+                                }
+                                WebResponse response = request.GetResponse();
+                                response.Close();
 
                                 ImageSourceConverter converter = new ImageSourceConverter();
-                                this.QuestionImage.Source = (ImageSource)converter.ConvertFromString(path + this.id + extention);
+                                this.QuestionImage.Source = (ImageSource)converter.ConvertFromString("http://" + host + ":" + port + "/GetImage.aspx?n=" + this.id + extention);
                                 this.question.image = path + this.id + extention;
                             }
                             catch (Exception exc) {
@@ -149,7 +150,7 @@ namespace Quiz
             this.FilterTextAnswer.Text = question.answerContent;
             this.NumTextBox.Text = question.number;
             ImageSourceConverter converter = new ImageSourceConverter();
-            this.QuestionImage.Source = (ImageSource)converter.ConvertFromString(question.image);
+            this.QuestionImage.Source = (ImageSource)converter.ConvertFromString("http://" + host + ":" + port + "/GetImage.aspx?n=" + question.image);
         }
 
         private void addImage(string fileName) 
@@ -165,7 +166,7 @@ namespace Quiz
 
         private void QuestionImageClick(object sender, MouseButtonEventArgs e)
         {
-            var image = new Image { Source = ((Image)sender).Source, Width = 400, Stretch = Stretch.Uniform };
+            var image = new System.Windows.Controls.Image { Source = ((System.Windows.Controls.Image)sender).Source, Width = 400, Stretch = Stretch.Uniform };
             var stack = new StackPanel {HorizontalAlignment = System.Windows.HorizontalAlignment.Center};
             var closeButton = new Button() { Content = "Закрыть", Width = 120, Height = 30, Margin = new Thickness(10) };
             var win = new Window { Content = stack, Width = 400, Height = 400, WindowStartupLocation = WindowStartupLocation.CenterOwner};
@@ -183,6 +184,7 @@ namespace Quiz
         public string answerId { get; set; }
         public string answerContent { get; set; }
         public string image { get; set; }
+        //public string imageName { get; set; }
 
         public Question() 
         {
