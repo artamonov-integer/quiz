@@ -28,7 +28,7 @@ namespace QuizServer
                 newPoint = -1;
             }
             if(!string.IsNullOrEmpty(points)){
-                XmlDocument doc = sg.xmlPartisipants;
+                XmlDocument doc = sg.xmlParticipants;
                 XmlElement param = doc.CreateElement("participant");
                 param.SetAttribute("id", id);
                 param.SetAttribute("name", name);
@@ -56,7 +56,7 @@ namespace QuizServer
                     if (!string.IsNullOrEmpty(login))
                     {   
                         doc.DocumentElement.InsertBefore(param,node);
-                        sg.partisipants = XmlStringConverter.convertXmlToString(doc);
+                        sg.participants = XmlStringConverter.convertXmlToString(doc);
                         isAdded = true;                                              
                         return;
                     }          
@@ -65,7 +65,7 @@ namespace QuizServer
             if (!isAdded) 
             {
                 doc.DocumentElement.AppendChild(param);
-                sg.partisipants = XmlStringConverter.convertXmlToString(doc);
+                sg.participants = XmlStringConverter.convertXmlToString(doc);
             }
             }
         }

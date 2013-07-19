@@ -1,10 +1,94 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <body>
-  <answer id="02e106ba-81cd-443d-964c-1b7a899748d9" content="Back" />
-  <answer id="f76f467a-5c76-46f8-b8a2-892056b51b54" content="Buc" />
-  <answer id="6d2c969c-de96-4b46-bd4e-7bb57fc2603c" content="Cad" />
-  <answer id="f1e98c19-9d26-4f17-af38-cdc1577c0000" content="Cop" />
-  <answer id="31b0b19b-efe1-43d9-9082-4bedc741e554" content="Drop" />
-  <answer id="2ffa4b28-1976-4ae6-b9e8-fc9f72e20088" content="Frod" />
-  <answer id="4bccb5e3-9de0-4de8-ae1e-c7833d715ba7" content="Vadg" />  
+  <answer id="7614012c-42aa-40c2-90f6-89160bce5747" content="Backguiner ~Yomigaeru Yuushatachi~ &quot;Guiner Tenshou&quot; (Japan only)" />
+  <answer id="ad84f39a-7e1b-4ea5-b3df-b649130f98f3" content="Backstreet Billiards" />
+  <answer id="9123509b-9338-41ff-b667-149a39327e6f" content="Ball Breakers" />
+  <answer id="9fec324a-9e18-4a96-aaf0-ed57a9d82aa4" content="Ballistic" />
+  <answer id="fc1b17c6-1246-45d6-bf65-2812e5ff75c4" content="Baseball 2000" />
+  <answer id="1cde14a5-cdd3-4558-9b57-acc86a59a7c6" content="Bass Landing" />
+  <answer id="0e4d066b-9a70-4d94-a769-f4a1f3496639" content="Bass Rise" />
+  <answer id="aef9fdcd-f8ca-421c-9150-8b725b4c51af" content="Batman &amp; Robin" />
+  <answer id="caae7c76-1cff-40e6-bc69-73089213e156" content="Batman Beyond: Return of the Joker" />
+  <answer id="8f983b12-9b7e-4fc2-b1c1-4844b2650c28" content="Batman Forever:The Arcade Game" />
+  <answer id="999fdaee-5b6e-4942-8451-2efbc76ba249" content="Batman: Gotham City Racer" />
+  <answer id="12b276ce-8bf3-448e-9b44-8784f851cc4a" content="Battle Arena Toshinden" />
+  <answer id="d83f9b80-444b-4830-b307-b9b949ff70e6" content="Battle Arena Toshinden 2" />
+  <answer id="76331d19-943c-472a-9859-91efcef68693" content="Battle Arena Toshinden 2 Plus" />
+  <answer id="84c6167c-f814-42de-85af-597b0fa359bb" content="Battle Arena Toshinden 3" />
+  <answer id="a61d9d4f-6b3e-4170-8fd5-fd43297883f0" content="Battle Arena Toshinden 4" />
+  <answer id="b6690801-e6b9-4024-8b01-1871e5620a3c" content="Battle Hunter" />
+  <answer id="8e28c573-5165-47a6-835d-81a9ad2afd96" content="Battletanx: Global Assault" />
+  <answer id="1e670d0c-6fda-40d4-860c-1f2e7c5c843b" content="Beast Wars" />
+  <answer id="f02dc98a-5578-451f-8625-dd5c82c7fdbb" content="Beatmania - The Sound of Tokyo (Japan only)" />
+  <answer id="bd485669-cc59-4c4c-8526-95347b10936e" content="Beatmania 2nd Mix (Japan only)" />
+  <answer id="43a74a30-2103-43ab-b949-654f7b34cf2d" content="Beatmania 6th Mix + Core Mix (Japan only)" />
+  <answer id="3795157e-f601-466e-89c8-370d55d6d1ec" content="Beatmania Append 3rd Mix (Japan only)" />
+  <answer id="92fa861e-aedd-4e45-a996-eb9408d433c2" content="Beatmania Append 4th Mix (Japan only)" />
+  <answer id="64992c28-9efc-4ec7-99b1-84e0fb64b5f9" content="Beatmania Append 5th Mix (Japan only)" />
+  <answer id="ae759acd-1739-4bfb-97f9-5fdbe976970f" content="Beatmania Append Club Mix (Japan only)" />
+  <answer id="b024a881-5ae0-424b-92d7-f502d1f5a7bb" content="Beatmania Append Gottamix (Japan only)" />
+  <answer id="d6750ae9-8168-46bb-bf32-f541701ac212" content="Beatmania Append Gottamix 2 - Going Global (Japan only)" />
+  <answer id="80da1be5-d67d-4071-b86b-5730f2805318" content="Beatmania Best Hits (Japan only)" />
+  <answer id="f2e94754-061e-4688-97a3-26b9da94c326" content="Bedlam" />
+  <answer id="2454b9a7-d68b-4901-a865-d149654adf2a" content="Beyblade" />
+  <answer id="060f23f1-9dd0-4709-a079-5a81cd0354a3" content="Beyond the Beyond" />
+  <answer id="57847bfb-15b4-4ade-9e59-0c1c1357652c" content="Big Air" />
+  <answer id="8a280131-8cb1-476a-905f-edd97ec08c96" content="Big Bass Fishing" />
+  <answer id="0fb1a452-5b14-43b9-a8ef-d07135823047" content="Big Ol' Bass 2" />
+  <answer id="e25db42c-e06f-496b-81b8-1c2f07e15fd5" content="Big Strike Bowling" />
+  <answer id="cdb1ca52-f13e-4e05-a832-0d9a41bb6b0a" content="Billiards" />
+  <answer id="815cd4c7-e20d-4da2-a868-176f72ee4f1b" content="Bio F.R.E.A.K.S." />
+  <answer id="870ed5ac-15a6-4cd4-aa9c-7a795451edc2" content="Bishi Bashi Special (Japan only)" />
+  <answer id="223fa9a6-36e0-4281-a41c-8a7837956431" content="Bishi Bashi Special (PAL) (PAL release, containing both Bishi Bashi Special 1 and 2)" />
+  <answer id="94f2af75-a249-44c7-945a-0d64e5517a68" content="Bishi Bashi Special 2 (Japan only)" />
+  <answer id="f8993ee9-1276-4b3b-9f22-6f62a5f487f4" content="Bishi Bashi Special 3: Step Champ (Japan only)" />
+  <answer id="e4d0b0d3-9e59-4d74-bcf4-8da8478621ef" content="Black Bass with Blue Marlin" />
+  <answer id="40832190-7ca4-4485-8fb1-c49a47940c78" content="Blade" />
+  <answer id="2b0de0c7-da82-41af-8d6d-1065a953eac9" content="Blade 2" />
+  <answer id="2511f988-1ef4-4971-95a6-6401139097c9" content="Blast Chamber" />
+  <answer id="a6b47b78-b8dc-41cd-ac64-1878f7a0a031" content="Blast Lacrosse" />
+  <answer id="c450d69a-e5e0-45b3-b105-102c3bb224ac" content="Blast Radius" />
+  <answer id="346feea5-15f0-420e-90f4-a7c25c22c565" content="Blaster Master: Blasting Again" />
+  <answer id="a1d9f6fc-f11a-4414-b5cb-108911ff1c34" content="Blasto" />
+  <answer id="5bdbe9cc-cf4a-4d5f-8cb8-42bef87458ea" content="Blaze &amp; Blade" />
+  <answer id="0db0b219-cd53-40d8-85c0-e77d1955550d" content="Blockids" />
+  <answer id="71d88553-a52b-4dc0-8df5-3c3b5cb025ee" content="Blood Omen: Legacy of Kain" />
+  <answer id="fd1d39c5-6076-49a3-9e2f-888c59dde0e7" content="Bloody Roar" />
+  <answer id="25800f9a-3491-409c-a1c0-7c888c410e68" content="Bloody Roar 2" />
+  <answer id="4a979baa-6342-4076-9ac7-f4989d2a0449" content="Blues Big Musical" />
+  <answer id="fd3977cc-10dd-4787-8159-48bdd4ade4bf" content="Board Game: Top Shop" />
+  <answer id="85251cb5-0773-4ac8-bef7-0b8daa498f7d" content="Bomberman Fantasy Race" />
+  <answer id="9352ca79-3953-4fdc-95ca-0c195a04b1e7" content="Bomberman Party Edition" />
+  <answer id="e66eed9a-4fd0-4222-9d63-bed55aecc703" content="Bomberman World" />
+  <answer id="6f9b2689-6613-486b-ba4d-1e940929bb30" content="Boombots" />
+  <answer id="81fc0b75-7359-44b2-a610-96d543d05177" content="Bottom of the 9th '97" />
+  <answer id="3c8505de-98a2-4941-ace8-83290a2c8988" content="Bowling" />
+  <answer id="ea00c749-15b8-4116-b438-f33fc40cd368" content="Boxing" />
+  <answer id="4a13f035-d262-40f9-acd6-9ebf1004b775" content="Bratz" />
+  <answer id="7de5df99-7f08-46ab-8fe3-2f14a744b8d8" content="Brave Charge Box (Japan only)" />
+  <answer id="2fdb5024-7f70-4dcb-92aa-678249790412" content="Brave Fencer Musashi (Brave Fencer Musashiden in Japan)" />
+  <answer id="23499169-a7a6-43d2-9275-f154d8c68460" content="Bravo Air Race" />
+  <answer id="223fc36a-70ea-4519-9c3c-36e09fb87c94" content="Breath of Fire III" />
+  <answer id="04a68852-6b0b-4280-bab6-bcba99db64e4" content="Breath of Fire IV" />
+  <answer id="3e39c590-7c55-47f3-a025-817635a7a900" content="Brigandine" />
+  <answer id="2d127100-0e75-4a70-a459-fff3f027e67b" content="Broken Sword" />
+  <answer id="b533459b-de3a-4df5-9c68-52285b7e4cb0" content="Broken Sword II" />
+  <answer id="3a3eef92-96e7-4f3d-908a-0b1869938be4" content="Brunswick Circuit Pro Bowling" />
+  <answer id="5d43bcfc-83c9-4743-b3c5-ac5b114a364f" content="Brunswick Circuit Pro Bowling 2" />
+  <answer id="ed68081f-4754-42d5-ae3d-4ac52693baa0" content="Bug Riders" />
+  <answer id="989b4f92-9c96-45ed-a8b8-76d48bc930f3" content="Bugs Bunny &amp; Taz: Time Busters" />
+  <answer id="8bf60be3-d2bf-4f10-9b88-7e3c6d5e862b" content="Bugs Bunny: Lost in Time" />
+  <answer id="116f904f-4229-4efe-af9c-28e368ef9d62" content="Builder's Block" />
+  <answer id="8c65c33e-e850-4d2c-9151-ff15e6d7cf3d" content="Bumm" />
+  <answer id="66e58a94-c9de-4636-b8e5-96d2b83afea0" content="Burstrick Wake Boarding!!" />
+  <answer id="6e146c39-22d8-42c6-827b-8fd8296c61a2" content="Bushido Blade" />
+  <answer id="ac691ddd-91d1-4ca1-a226-0be955c0c042" content="Bushido Blade 2" />
+  <answer id="b90fbd57-8bfe-4a91-a13e-686f347c84e0" content="Bust a Groove (Bust a Move in Japan)" />
+  <answer id="15ab1166-cbba-4d5b-8c94-48f8eedd9179" content="Bust a Groove 2 (Bust a Move 2 in Japan)" />
+  <answer id="ce2b376c-6226-4eda-8950-ff769d567721" content="Bust-A-Move 2 (Puzzle Bobble 2 in japan)" />
+  <answer id="5f88dbd8-96ac-466c-83e0-35217581d498" content="Bust-A-Move 4 (Puzzle Bobble 4 in Japan)" />
+  <answer id="51ac366e-4155-4645-9560-3da9bb9af8a9" content="Bust-A-Move 99 (Puzzle Bobble 3 in Japan)" />
+  <answer id="bc5c6d5c-c565-4037-b507-96484df7611c" content="But But" />
+  <answer id="1efc5d63-9b78-41c5-828d-8448474bdb42" content="Buzz Lightyear of Star Command" />
+  <answer id="d5dde92c-85c5-4a26-997a-6622dc1c679a" content="The Bombing Islands" />
 </body>

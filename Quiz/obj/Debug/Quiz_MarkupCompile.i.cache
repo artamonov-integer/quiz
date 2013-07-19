@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\projects\quiz\trunk\trunk\Quiz\App.xaml
-2-853052447
+31640842914
 
-112049562699
+121422085830
 131478842535
-MainWindow.xaml;QuestionControl.xaml;
+MainWindow.xaml;QuestionControl.xaml;SettingsWindow.xaml;
 
 False
 

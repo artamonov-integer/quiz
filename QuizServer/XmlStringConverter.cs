@@ -29,8 +29,15 @@ namespace QuizServer
         public static XmlDocument convertStringToXml(string str)
         {
             XmlDocument xml = new XmlDocument();
-            StringReader sr = new StringReader(str);
-            xml.Load(sr);
+            try
+            {
+                StringReader sr = new StringReader(str);
+                xml.Load(sr);
+            }
+            catch (Exception e) 
+            {
+                return null;
+            }
             return xml;
         }
     }

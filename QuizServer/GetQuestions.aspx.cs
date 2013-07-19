@@ -12,8 +12,15 @@ namespace QuizServer
         Singleton sg = Singleton.Instance;
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.ContentType = "text/xml";
-            Response.Write(sg.questions);
+            if (sg.isActive)
+            {
+                Response.ContentType = "text/xml";
+                Response.Write(sg.questions);
+            }
+            else
+            {
+                Response.Write("0");
+            }
         }
     }
 }

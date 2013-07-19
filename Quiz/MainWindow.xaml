@@ -1,9 +1,23 @@
 ﻿<Window x:Class="Quiz.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Quiz" Height="600" Width="820" Loaded="Window_Loaded">
+        Title="Quiz" Height="600" Width="960" Loaded="Window_Loaded" Closing="Window_Closing_1">
     <Grid>
-        <TabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" MaxHeight="20" MinHeight="20"/>
+            <RowDefinition Height="90*"/>
+        </Grid.RowDefinitions>
+        <Menu Name="MainMenu">
+            <MenuItem Name="FirstMenu" Header="Menu">
+                <MenuItem Header="Start" Click="MenuItem_Click_Start"/>
+                <MenuItem Header="Stop" Click="MenuItem_Click_Stop"/>
+                <MenuItem Header="Save" Click="MenuItem_Click_Save"/>
+            </MenuItem> 
+            <MenuItem Header="Settings">
+                <MenuItem Header="Connect settings" Click="MenuItem_Click_1"/>
+            </MenuItem>
+        </Menu>
+        <TabControl Grid.Row="1">
             <TabItem Header="Questions">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -32,7 +46,8 @@
                         <RowDefinition Height="90*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="0">
-                        <Button Name="RefreshParticipantsButton" Content="Load or refresh participants" Height="20" Width="200" HorizontalAlignment="Left" Margin="2" Click="RefreshParticipantsButton_Click"/>                        
+                        <Button Name="RefreshParticipantsButton" Content="Refresh" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="RefreshParticipantsButton_Click"/>
+                        <Button Name="SaveParticipantsButton" Content="Save to file" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="SaveParticipantsButton_Click"/>
                     </StackPanel>
                     <!--<ListBox Name="ParticipantsList" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="1"/>-->
                     <ListView Name="ParticipantsList" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="1">
@@ -69,7 +84,7 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="0">                    
                         <Button Name="LoadAnswersList" Content="Load From File" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="LoadAnswersList_Click"/>
                         <Button Name="AddAnswerButton" Content="Add answer" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="AddAnswerButtom_Click"/>
-                        <Button Name="TestButton" Content="Test" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="TestButtom_Click"/>
+                        <Button Name="RemoveAnswerButton" Content="Remove answer" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="RemoveAnswerButtom_Click"/>
                         <TextBox Name="AnswerTextBox" Height="20" Width="200" KeyUp="AnswerTextBox_KeyUp"/>
                         <Image Name="TestImage" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Height="20" Width="20"/>
                     </StackPanel>

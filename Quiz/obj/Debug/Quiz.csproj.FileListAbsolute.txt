@@ -28,3 +28,5 @@ C:\projects\quiz\trunk\trunk\Quiz\obj\Debug\Quiz_MarkupCompile.cache
 C:\projects\quiz\trunk\trunk\Quiz\obj\Debug\Quiz.g.resources
 C:\projects\quiz\trunk\trunk\Quiz\obj\Debug\Quiz.Properties.Resources.resources
 C:\projects\quiz\trunk\trunk\Quiz\obj\Debug\Quiz.csproj.GenerateResource.Cache
+C:\projects\quiz\trunk\trunk\Quiz\obj\Debug\SettingsWindow.baml
+C:\projects\quiz\trunk\trunk\Quiz\obj\Debug\SettingsWindow.g.cs

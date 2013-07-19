@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml;
 
 namespace QuizServer
 {
-    public partial class GetParticipants : System.Web.UI.Page
+    public partial class SaveQuize : System.Web.UI.Page
     {
         Singleton sg = Singleton.Instance;
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.ContentType = "text/xml";
-            Response.Write(sg.participants);            
+            sg.saveXml();
         }
     }
 }

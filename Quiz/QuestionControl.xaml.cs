@@ -47,10 +47,7 @@ namespace Quiz
 
         private void FilterTextAnswer_KeyUp(object sender, KeyEventArgs e)
         {
-            //if (e.Key == Key.Enter)
-            {
-                refreshAnswerComboBox(filterList(this.FilterTextAnswer.Text, this.answers));                                
-            }
+            refreshAnswerComboBox(filterList(this.FilterTextAnswer.Text, this.answers));                                
         }
 
         private void refreshAnswerComboBox(List<Answer> answerList) 
@@ -89,7 +86,6 @@ namespace Quiz
                     {
                         Directory.CreateDirectory(path);
                     }
-                    //откроем поток для записи в файл
                     string extention = null;
                     int index = fileName.IndexOf('.');
                     if (index > 0)
@@ -119,7 +115,7 @@ namespace Quiz
 
                                 ImageSourceConverter converter = new ImageSourceConverter();
                                 this.QuestionImage.Source = (ImageSource)converter.ConvertFromString("http://" + host + ":" + port + "/GetImage.aspx?n=" + this.id + extention);
-                                this.question.image = path + this.id + extention;
+                                this.question.image = this.id + extention;
                             }
                             catch (Exception exc) {
                                 this.QuestionTextBox.Text = exc.ToString();
@@ -153,11 +149,6 @@ namespace Quiz
             this.QuestionImage.Source = (ImageSource)converter.ConvertFromString("http://" + host + ":" + port + "/GetImage.aspx?n=" + question.image);
         }
 
-        private void addImage(string fileName) 
-        {
-
-        }
-
         public void saveQuestion() 
         {
             this.question.content = this.QuestionTextBox.Text;
@@ -176,23 +167,29 @@ namespace Quiz
             win.ShowDialog();
             win.Focus();
         }
+
+        private void NumTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            
+        }
     }
     public class Question 
     {
+        public string id { get; set; }
         public string number { get; set; }
         public string content { get; set; }
         public string answerId { get; set; }
         public string answerContent { get; set; }
         public string image { get; set; }
-        //public string imageName { get; set; }
 
         public Question() 
         {
-
+            this.id = System.Guid.NewGuid().ToString(); 
         }
 
-        public Question(string number, string content, string answerId, string answerContent, string image)
+        public Question(string id, string number, string content, string answerId, string answerContent, string image)
         {
+            this.id = id;
             this.number = number;
             this.content = content;
             this.answerId = answerId;

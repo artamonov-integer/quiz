@@ -1,0 +1,27 @@
+﻿<Window x:Class="Quiz.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Settings" Height="160" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Label Content="Host" Width="100" VerticalAlignment="Center"/>
+            <TextBox Name="HostTextBox" Width="150" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label Content="Port" Width="100" VerticalAlignment="Center"/>
+            <TextBox Name="PortTextBox" Width="150" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Name="okButton" Margin="10" Width="120" Click="okButton_Click" IsDefault="True">OK</Button>
+            <Button Name="cancelButton" Margin="10" Width="120"  IsCancel="True">Cancel</Button>
+        </StackPanel>
+    </Grid>
+</Window>
