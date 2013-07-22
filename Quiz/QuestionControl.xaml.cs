@@ -159,7 +159,7 @@ namespace Quiz
         {
             var image = new System.Windows.Controls.Image { Source = ((System.Windows.Controls.Image)sender).Source, Width = 400, Stretch = Stretch.Uniform };
             var stack = new StackPanel {HorizontalAlignment = System.Windows.HorizontalAlignment.Center};
-            var closeButton = new Button() { Content = "Закрыть", Width = 120, Height = 30, Margin = new Thickness(10) };
+            var closeButton = new Button() { Content = "Close", Width = 120, Height = 30, Margin = new Thickness(10) };
             var win = new Window { Content = stack, Width = 400, Height = 400, WindowStartupLocation = WindowStartupLocation.CenterOwner};
             stack.Children.Add(image);
             stack.Children.Add(closeButton);

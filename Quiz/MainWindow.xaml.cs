@@ -19,6 +19,7 @@ using System.Net;
 using System.Drawing;
 using System.Collections.Specialized;
 using System.Drawing.Imaging;
+//using System.Windows.Forms;
 
 namespace Quiz
 {
@@ -236,7 +237,7 @@ namespace Quiz
         private void AddQuestionButton_Click(object sender, RoutedEventArgs e)
         {
             QuestionControl qc = new QuestionControl(this.answers, this.host, this.port);
-            qc.NumTextBox.Text = (this.QuestionsList.Items.Count+1).ToString();
+            qc.NumTextBox.Text = (this.QuestionsList.Items.Count + 1).ToString();
             this.QuestionsList.Items.Add(qc);
         }
 
@@ -255,7 +256,7 @@ namespace Quiz
                 this.questions = loadQuestions();
                 refreshQuestionsListBox();
             }
-            catch (WebException ex) 
+            catch (WebException ex)
             {
                 MessageBox.Show("No connection!");
             }
@@ -306,7 +307,7 @@ namespace Quiz
                         }
                     }
                 }
-                else 
+                else
                 {
                     this.port = "8080";
                     this.host = "localhost";
@@ -384,7 +385,7 @@ namespace Quiz
             response.Close();
         }
 
-        
+
 
         private void RemoveAnswerButtom_Click(object sender, RoutedEventArgs e)
         {
@@ -411,7 +412,7 @@ namespace Quiz
         private void MenuItem_Click_Start(object sender, RoutedEventArgs e)
         {
             WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/ActivateQuiz.aspx?p=1");
-            request.GetResponse();            
+            request.GetResponse();
         }
 
         private void MenuItem_Click_Save(object sender, RoutedEventArgs e)
@@ -426,7 +427,7 @@ namespace Quiz
             SettingsWindow sw = new SettingsWindow(this.host, this.port);
             sw.Owner = this;
             Nullable<bool> result = sw.ShowDialog();
-            if (result==true) 
+            if (result == true)
             {
                 string h = sw.HostTextBox.Text;
                 string p = sw.PortTextBox.Text;
@@ -435,9 +436,9 @@ namespace Quiz
                     WebRequest request = WebRequest.Create("http://" + h + ":" + p + "/Default.aspx");
                     request.GetResponse();
                 }
-                catch (WebException ex) 
+                catch (WebException ex)
                 {
-                    MessageBox.Show("No connection!");
+                    System.Windows.MessageBox.Show("No connection!");
                     return;
                 }
                 this.port = p;
@@ -452,24 +453,29 @@ namespace Quiz
 
         private void SaveParticipantsButton_Click(object sender, RoutedEventArgs e)
         {
-
-            List<Question> loadedQuestions = new List<Question>();
-            XmlDocument xmlDoc = new XmlDocument();
-            WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/getParticipants.aspx");
-            WebResponse response = request.GetResponse();
-            xmlDoc.Load(response.GetResponseStream());
-            if (!File.Exists("loaded.xml"))
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
             {
-                StreamWriter sw = File.CreateText("loaded.xml");
-                sw.Close();
-                XmlTextWriter textWritter = new XmlTextWriter("loaded.xml", System.Text.Encoding.UTF8);
-                textWritter.WriteStartDocument();
-                textWritter.WriteStartElement("body");
-                textWritter.WriteEndElement();
-                textWritter.Close();
+                string path = dialog.SelectedPath;
+                List<Question> loadedQuestions = new List<Question>();
+                XmlDocument xmlDoc = new XmlDocument();
+                WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/getParticipants.aspx");
+                WebResponse response = request.GetResponse();
+                xmlDoc.Load(response.GetResponseStream());
+
+                if (!File.Exists(path + @"\loaded.xml"))
+                {
+                    StreamWriter sw = File.CreateText(path + @"\loaded.xml");
+                    sw.Close();
+                    XmlTextWriter textWritter = new XmlTextWriter(path + @"\loaded.xml", System.Text.Encoding.UTF8);
+                    textWritter.WriteStartDocument();
+                    textWritter.WriteStartElement("body");
+                    textWritter.WriteEndElement();
+                    textWritter.Close();
+                }
+                xmlDoc.Save(path + @"\loaded.xml");
             }
-            xmlDoc.Save("loaded.xml");
-                       
         }
 
         private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
@@ -487,7 +493,7 @@ namespace Quiz
         public int Points { get; set; }
         public string Id { get; set; }
 
-        public Participant(){}
+        public Participant() { }
 
         public Participant(string Login, string Name, string Mail, int Points, string Id)
         {

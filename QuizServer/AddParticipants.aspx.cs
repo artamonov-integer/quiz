@@ -22,12 +22,14 @@ namespace QuizServer
             int newPoint = -1;
             try
             {
-                newPoint = Convert.ToInt32(points); 
-            }catch(FormatException ex)
+                newPoint = Convert.ToInt32(points);
+            }
+            catch (FormatException ex)
             {
                 newPoint = -1;
             }
-            if(!string.IsNullOrEmpty(points)){
+            if (!string.IsNullOrEmpty(points))
+            {
                 XmlDocument doc = sg.xmlParticipants;
                 XmlElement param = doc.CreateElement("participant");
                 param.SetAttribute("id", id);
@@ -37,36 +39,38 @@ namespace QuizServer
                 param.SetAttribute("points", points);
 
                 bool isAdded = false;
-                 foreach (XmlElement node in doc.DocumentElement.ChildNodes)
-            {
-                int point = -1;
-                foreach (XmlAttribute attr in node.Attributes)
+                foreach (XmlElement node in doc.DocumentElement.ChildNodes)
                 {
-                    try{
-                    if (attr.Name.Equals("points"))
-                        point = Convert.ToInt32(attr.Value);
-                    }
-                    catch(FormatException ex)
+                    int point = -1;
+                    foreach (XmlAttribute attr in node.Attributes)
                     {
-                        point = -1;
+                        try
+                        {
+                            if (attr.Name.Equals("points"))
+                                point = Convert.ToInt32(attr.Value);
+                        }
+                        catch (FormatException ex)
+                        {
+                            point = -1;
+                        }
+                    }
+                    if (!isAdded && point > -1 && point <= newPoint)
+                    {
+                        if (!string.IsNullOrEmpty(login))
+                        {
+                            doc.DocumentElement.InsertBefore(param, node);
+                            sg.participants = XmlStringConverter.convertXmlToString(doc);
+                            isAdded = true;
+                            return;
+                        }
                     }
                 }
-                if (!isAdded && point > -1 && point<=newPoint) 
+                if (!isAdded)
                 {
-                    if (!string.IsNullOrEmpty(login))
-                    {   
-                        doc.DocumentElement.InsertBefore(param,node);
-                        sg.participants = XmlStringConverter.convertXmlToString(doc);
-                        isAdded = true;                                              
-                        return;
-                    }          
-                }                
-            }
-            if (!isAdded) 
-            {
-                doc.DocumentElement.AppendChild(param);
-                sg.participants = XmlStringConverter.convertXmlToString(doc);
-            }
+                    doc.DocumentElement.AppendChild(param);
+                    sg.participants = XmlStringConverter.convertXmlToString(doc);                    
+                }
+                sg.saveParticipants();
             }
         }
     }

@@ -105,5 +105,9 @@ namespace QuizServer
             xmlParticipants.Save(path + "participants.xml");
             xmlQuestions.Save(path + "questions.xml");
         }
+        public void saveParticipants() 
+        {
+            xmlParticipants.Save(path + "participants.xml");
+        }
     }
 }

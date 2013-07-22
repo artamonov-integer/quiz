@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Text;
 
 namespace QuizServer
 {
@@ -14,21 +15,22 @@ namespace QuizServer
         {
             string isActive = Request.QueryString["p"];
             Response.ContentType = "text/xml";
+            Response.ContentEncoding = new UTF8Encoding();
             if (!string.IsNullOrEmpty(isActive)) 
             {
                 if (isActive.Equals("1"))
                 {
                     sg.isActive = true;
-                    Response.Write("1");
+                    Response.Write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><content>1</content>");
                 }
                 else if (isActive.Equals("0"))
                 {
                     sg.isActive = false;
-                    Response.Write("0");
+                    Response.Write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><content>0</content>");
                 }
             }
             else
-                Response.Write("0");
+                Response.Write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><content>0</content>");
         }
     }
 }

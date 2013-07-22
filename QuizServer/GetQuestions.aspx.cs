@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Text;
 
 namespace QuizServer
 {
@@ -19,7 +20,8 @@ namespace QuizServer
             }
             else
             {
-                Response.Write("0");
+                Response.ContentEncoding = new UTF8Encoding();
+                Response.Write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><content>0</content>");
             }
         }
     }

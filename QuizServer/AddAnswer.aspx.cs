@@ -65,8 +65,8 @@ namespace QuizServer
                 }
                 sg.answers = XmlStringConverter.convertXmlToString(xmlAnswers);
             }
-            //Response.ContentType = "text/xml";
-            //Response.Write("1");
+            Response.ContentType = "text/xml";
+            Response.Write("1");
         }
     }
 }
