@@ -61,6 +61,7 @@ namespace QuizServer
                             doc.DocumentElement.InsertBefore(param, node);
                             sg.participants = XmlStringConverter.convertXmlToString(doc);
                             isAdded = true;
+                            sg.saveParticipants();
                             return;
                         }
                     }

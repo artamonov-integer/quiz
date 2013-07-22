@@ -13,3 +13,5 @@ C:\projects\quiz\trunk\trunk\QuizApp\obj\Debug\QuizApp.exe
 C:\projects\quiz\trunk\trunk\QuizApp\obj\Debug\QuizApp.pdb
 C:\projects\quiz\trunk\trunk\QuizApp\obj\Debug\PersonalDataWindow.baml
 C:\projects\quiz\trunk\trunk\QuizApp\obj\Debug\PersonalDataWindow.g.cs
+C:\projects\quiz\trunk\trunk\QuizApp\obj\Debug\SettingsWindow.baml
+C:\projects\quiz\trunk\trunk\QuizApp\obj\Debug\SettingsWindow.g.cs

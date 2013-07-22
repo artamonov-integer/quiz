@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\projects\quiz\trunk\trunk\QuizApp\App.xaml
-21837814261
+336742326
 
-6-2063124198
+71604366229
 12-1401562060
-MainWindow.xaml;PersonalDataWindow.xaml;
+MainWindow.xaml;PersonalDataWindow.xaml;SettingsWindow.xaml;
 
 False
 

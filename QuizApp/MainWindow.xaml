@@ -4,15 +4,21 @@
         Title="Quize Application" Height="500" Width="700" Loaded="Window_Loaded">
     <Grid>
         <Grid Name="StartGrid" Visibility="Visible">
-            <Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>                
                 <ColumnDefinition Width="100*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="10*" MaxHeight="26"/>
                 <RowDefinition Height="30*"/>
                 <RowDefinition Height="60*"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Content="Quiz" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="50"/>
-            <Button Name="StartButton" Grid.Row="1" Content="Start quize"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40" Click="StartButton_Click"/>
+            <Menu Name="MainMenu" Grid.Row="0">
+                <MenuItem Header="Settings">
+                    <MenuItem Header="Connect settings" Click="MenuItem_Click_1"/>
+                </MenuItem>
+            </Menu>
+            <Label Grid.Row="1" Content="Quiz" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="50"/>
+            <Button Name="StartButton" Grid.Row="2" Content="Start quize"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40" Click="StartButton_Click"/>
         </Grid>
         <Grid Name="QuestionGrid" Visibility="Hidden">
             <Grid.ColumnDefinitions>

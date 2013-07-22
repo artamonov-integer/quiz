@@ -334,5 +334,32 @@ namespace QuizApp
                     return base.ToString();
             }
         }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow sw = new SettingsWindow(this.host, this.port);
+            sw.Owner = this;
+            Nullable<bool> result = sw.ShowDialog();
+            if (result == true)
+            {
+                string h = sw.HostTextBox.Text;
+                string p = sw.PortTextBox.Text;
+                try
+                {
+                    WebRequest request = WebRequest.Create("http://" + h + ":" + p + "/Default.aspx");
+                    request.GetResponse();
+                }
+                catch (WebException ex)
+                {
+                    System.Windows.MessageBox.Show("No connection!");
+                    return;
+                }
+                this.port = p;
+                this.host = h;
+
+                loadAnswers(this.answers);
+                loadQuestions(this.questions);
+            }
+        }
     }
 }
