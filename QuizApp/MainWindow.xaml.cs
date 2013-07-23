@@ -198,39 +198,29 @@ namespace QuizApp
         private void loadConfig()
         {
             StreamReader sr = null;
-            try
+            if (File.Exists("config.txt"))
             {
-                if (File.Exists("config.txt"))
+                sr = new StreamReader("config.txt");
+                while (!sr.EndOfStream)
                 {
-                    sr = new StreamReader("config.txt");
-                    while (!sr.EndOfStream)
+                    string conf = sr.ReadLine();
+                    int index = conf.IndexOf('=');
+                    if (index > 0)
                     {
-                        string conf = sr.ReadLine();
-                        int index = conf.IndexOf('=');
-                        if (index > 0)
-                        {
-                            string confName = conf.Substring(0, index).Trim();
-                            string value = conf.Substring(index + 1).Trim();
-                            if (confName.Equals("port"))
-                                this.port = value;
-                            else if (confName.Equals("host"))
-                                this.host = value;
-                        }
+                        string confName = conf.Substring(0, index).Trim();
+                        string value = conf.Substring(index + 1).Trim();
+                        if (confName.Equals("port"))
+                            this.port = value;
+                        else if (confName.Equals("host"))
+                            this.host = value;
                     }
                 }
-                else
-                {
-                    this.port = "8080";
-                    this.host = "localhost";
-                }
-            }
-            catch (FileNotFoundException ex)
-            {
-                MessageBox.Show("Config file not found!");
-            }
-            finally
-            {
                 sr.Close();
+            }
+            else
+            {
+                this.port = "8080";
+                this.host = "localhost";
             }
         }
 

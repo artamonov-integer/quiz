@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quiz", "Quiz\Quiz.csproj", "{109066EE-2503-478A-B09C-36F21A3FD1FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizAdminPanel", "Quiz\QuizAdminPanel.csproj", "{109066EE-2503-478A-B09C-36F21A3FD1FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizServer", "QuizServer\QuizServer.csproj", "{7A1526F4-B351-418B-81BE-3C4BB8002078}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizApp", "QuizApp\QuizApp.csproj", "{1C6BA29C-DE99-4864-9287-71721409F370}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizClient", "QuizApp\QuizClient.csproj", "{1C6BA29C-DE99-4864-9287-71721409F370}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
