@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Web;
 using System.IO;
 using System.Xml;
+using System.Security.AccessControl;
 
 namespace QuizServer
 {
     public class Singleton
     {
-        private string path = Environment.CurrentDirectory + @"\data\";
+        private string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\data\";
+        //private string path = Environment.CurrentDirectory + @"\data\";
+        //private bool b =  RecurceAccess(Environment.CurrentDirectory);
         public string answers = "";
         public string questions = "";
         public string participants = "";
@@ -24,6 +27,7 @@ namespace QuizServer
         }
         private Singleton()
         {
+            RecurceAccess(path);
             isActive = false;
             StreamReader sr = null;
             StreamWriter sw = null;
@@ -108,6 +112,56 @@ namespace QuizServer
         public void saveParticipants() 
         {
             xmlParticipants.Save(path + "participants.xml");
+        }
+
+        private void RecurceAccess(string folder)
+        {
+            try
+            {
+                System.Security.Principal.WindowsIdentity wi = System.Security.Principal.WindowsIdentity.GetCurrent();
+                string user = wi.Name;
+                AddDirectorySecurity(folder, @user, FileSystemRights.FullControl, AccessControlType.Allow);
+                string[] folders = Directory.GetDirectories(folder);
+                for (int i = 0; i < folders.Length; i++)
+                {
+                    RecurceAccess(folders[i]);
+                }
+            }
+            catch (Exception e) { 
+                //MessageBox.Show(e.ToString()); 
+            }
+        }
+        //объявляет метод
+        public static void AddFileSecurity(string fileName, string account,
+          FileSystemRights rights, AccessControlType controlType)
+        {
+
+            // Get a FileSecurity object that represents the
+            // current security settings.
+            FileSecurity fSecurity = File.GetAccessControl(fileName);
+
+            // Add the FileSystemAccessRule to the security settings.
+            fSecurity.AddAccessRule(new FileSystemAccessRule(account,
+                rights, controlType));
+
+            // Set the new access settings.
+            File.SetAccessControl(fileName, fSecurity);
+        }
+        //объявляет метод
+        public static void AddDirectorySecurity(string fileName, string account,
+          FileSystemRights rights, AccessControlType controlType)
+        {
+
+            // Get a FileSecurity object that represents the
+            // current security settings.
+            DirectorySecurity fSecurity = Directory.GetAccessControl(fileName);
+
+            // Add the FileSystemAccessRule to the security settings.
+            fSecurity.AddAccessRule(new FileSystemAccessRule(account,
+                rights, controlType));
+
+            // Set the new access settings.
+            Directory.SetAccessControl(fileName, fSecurity);
         }
     }
 }
