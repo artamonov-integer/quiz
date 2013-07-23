@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace QuizServer
 {
-    public partial class SaveQuize : System.Web.UI.Page
+    public partial class SaveQuiz : System.Web.UI.Page
     {
         Singleton sg = Singleton.Instance;
         protected void Page_Load(object sender, EventArgs e)

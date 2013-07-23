@@ -1,5 +1,0 @@
-C:\projects\quiz\trunk\trunk\QuizServer\bin\QuizServer.dll
-C:\projects\quiz\trunk\trunk\QuizServer\bin\QuizServer.pdb
-C:\projects\quiz\trunk\trunk\QuizServer\obj\Debug\QuizServer.csprojResolveAssemblyReference.cache
-C:\projects\quiz\trunk\trunk\QuizServer\obj\Debug\QuizServer.dll
-C:\projects\quiz\trunk\trunk\QuizServer\obj\Debug\QuizServer.pdb

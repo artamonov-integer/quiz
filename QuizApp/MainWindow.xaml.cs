@@ -44,8 +44,8 @@ namespace QuizApp
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {   this.answers = new List<Answer>();
             this.questions = new List<Question>();
-            bool isActiveQuize = loadQuestions(this.questions);
-            if (isActiveQuize)
+            bool isActiveQuiz = loadQuestions(this.questions);
+            if (isActiveQuiz)
             {
                 this.StartGrid.Visibility = Visibility.Hidden;
                 this.QuestionGrid.Visibility = Visibility.Visible;

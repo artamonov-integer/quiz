@@ -1,1 +1,1 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SaveQuiz.aspx.cs" Inherits="QuizServer.SaveQuize" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SaveQuiz.aspx.cs" Inherits="QuizServer.SaveQuiz" %>
