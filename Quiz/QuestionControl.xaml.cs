@@ -146,8 +146,17 @@ namespace Quiz
             this.FilterTextAnswer.Text = question.answerContent;
             this.NumTextBox.Text = question.number;
             ImageSourceConverter converter = new ImageSourceConverter();
-            this.QuestionImage.Source = (ImageSource)converter.ConvertFromString("http://" + host + ":" + port + "/GetImage.aspx?n=" + question.image);
+            try
+            {
+                this.QuestionImage.Source = (ImageSource)converter.ConvertFromString("http://" + host + ":" + port + "/GetImage.aspx?n=" + question.image);
+            }
+            catch (WebException ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
         }
+
+        
 
         public void saveQuestion() 
         {

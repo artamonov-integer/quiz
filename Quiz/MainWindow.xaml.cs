@@ -63,7 +63,7 @@ namespace Quiz
                 }
                 sr.Close();
                 saveAnswers(answerList);
-                loadAnswers(this.answers);
+                loadAnswers();
                 refreshAnswersListBox(this.answers);
             }
         }
@@ -103,8 +103,8 @@ namespace Quiz
 
         private void refreshParticipantsListBox(List<Participant> participiantList)
         {
-            this.participants = getParticipantList();
-            this.ParticipantsList.ItemsSource = this.participants;
+            //this.participants = getParticipantList();
+            this.ParticipantsList.ItemsSource = participiantList;
             this.ParticipantsList.Items.Refresh();
         }
 
@@ -113,51 +113,66 @@ namespace Quiz
             List<Participant> participantList = new List<Participant>();
             XmlDocument xmlDoc = new XmlDocument();
             WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/GetParticipants.aspx");
-            WebResponse response = request.GetResponse();
-            xmlDoc.Load(response.GetResponseStream());
-            response.Close();
-
-            foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
+            try
             {
-                Participant participant = new Participant();
-                foreach (XmlAttribute attr in table.Attributes)
+                WebResponse response = request.GetResponse();
+                xmlDoc.Load(response.GetResponseStream());
+                response.Close();
+
+                foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
                 {
-                    if (attr.Name.Equals("id"))
-                        participant.Id = attr.Value;
-                    else if (attr.Name.Equals("name"))
-                        participant.Name = attr.Value;
-                    else if (attr.Name.Equals("login"))
-                        participant.Login = attr.Value;
-                    else if (attr.Name.Equals("mail"))
-                        participant.Mail = attr.Value;
-                    else if (attr.Name.Equals("points"))
-                        participant.Points = Convert.ToInt32(attr.Value);
+                    Participant participant = new Participant();
+                    foreach (XmlAttribute attr in table.Attributes)
+                    {
+                        if (attr.Name.Equals("id"))
+                            participant.Id = attr.Value;
+                        else if (attr.Name.Equals("name"))
+                            participant.Name = attr.Value;
+                        else if (attr.Name.Equals("login"))
+                            participant.Login = attr.Value;
+                        else if (attr.Name.Equals("mail"))
+                            participant.Mail = attr.Value;
+                        else if (attr.Name.Equals("points"))
+                            participant.Points = Convert.ToInt32(attr.Value);
+                    }
+                    participantList.Add(participant);
                 }
-                participantList.Add(participant);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
             }
             return participantList;
         }
 
-        private List<Answer> loadAnswers(List<Answer> answerList)
+        private bool loadAnswers()
         {
-            answerList.Clear();
+            this.answers.Clear();
             XmlDocument xmlDoc = new XmlDocument();
             WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/GetAnswers.aspx");
-            WebResponse response = request.GetResponse();
-            xmlDoc.Load(response.GetResponseStream());
-            foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
+            try
             {
-                Answer answer = new Answer();
-                foreach (XmlAttribute attr in table.Attributes)
+                WebResponse response = request.GetResponse();
+                xmlDoc.Load(response.GetResponseStream());
+                foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
                 {
-                    if (attr.Name.Equals("id"))
-                        answer.id = attr.Value;
-                    else if (attr.Name.Equals("content"))
-                        answer.content = attr.Value;
-                }
-                answerList.Add(answer);
+                    Answer answer = new Answer();
+                    foreach (XmlAttribute attr in table.Attributes)
+                    {
+                        if (attr.Name.Equals("id"))
+                            answer.id = attr.Value;
+                        else if (attr.Name.Equals("content"))
+                            answer.content = attr.Value;
+                    }
+                    this.answers.Add(answer);
+                }                
             }
-            return answerList;
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+                return false;
+            }
+            return true;
         }
 
         private List<Question> loadQuestions()
@@ -165,41 +180,53 @@ namespace Quiz
             List<Question> loadedQuestions = new List<Question>();
             XmlDocument xmlDoc = new XmlDocument();
             WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/getQuestionsForAdmin.aspx");
-            WebResponse response = request.GetResponse();
-            xmlDoc.Load(response.GetResponseStream());
-            foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
+            try
             {
-                Question question = new Question();
-                foreach (XmlAttribute attr in table.Attributes)
+                WebResponse response = request.GetResponse();
+                xmlDoc.Load(response.GetResponseStream());
+                foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
                 {
-                    if (attr.Name.Equals("number"))
-                        question.number = attr.Value;
-                    else if (attr.Name.Equals("content"))
-                        question.content = attr.Value;
-                    else if (attr.Name.Equals("image"))
-                        question.image = attr.Value;
-                    else if (attr.Name.Equals("answerId"))
-                        question.answerId = attr.Value;
-                    else if (attr.Name.Equals("answerContent"))
-                        question.answerContent = attr.Value;
+                    Question question = new Question();
+                    foreach (XmlAttribute attr in table.Attributes)
+                    {
+                        if (attr.Name.Equals("number"))
+                            question.number = attr.Value;
+                        else if (attr.Name.Equals("id"))
+                            question.id = attr.Value;
+                        else if (attr.Name.Equals("content"))
+                            question.content = attr.Value;
+                        else if (attr.Name.Equals("image"))
+                            question.image = attr.Value;
+                        else if (attr.Name.Equals("answerId"))
+                            question.answerId = attr.Value;
+                        else if (attr.Name.Equals("answerContent"))
+                            question.answerContent = attr.Value;
+                    }
+                    loadedQuestions.Add(question);
                 }
-                loadedQuestions.Add(question);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
             }
             return loadedQuestions;
         }
 
         private void refreshQuestionsListBox()
         {
+            this.QuestionsList.Items.Clear();
             foreach (Question question in this.questions)
             {
                 QuestionControl qc = new QuestionControl(this.answers, this.host, this.port);
                 qc.setQuestion(question);
+                //qc.answers = this.answers;
                 this.QuestionsList.Items.Add(qc);
             }
-            foreach (QuestionControl qc in QuestionsList.Items)
-            {
-                qc.answers = this.answers;
-            }
+            //this.QuestionsList.Items.Refresh();
+            //foreach (QuestionControl qc in QuestionsList.Items)
+            //{
+            //    qc.answers = this.answers;
+            //}
         }
 
         private void saveQuestions()
@@ -220,7 +247,14 @@ namespace Quiz
                 newStream.Write(bytes, 0, bytes.Length);
                 newStream.Close();
             }
-            request.GetResponse();
+            //try
+            //{
+                request.GetResponse();
+            //}
+            //catch (Exception ex)
+            //{
+            //    System.Windows.MessageBox.Show(ex.Message);
+            //}
         }
 
         private void AnswerTextBox_KeyUp(object sender, KeyEventArgs e)
@@ -243,7 +277,14 @@ namespace Quiz
 
         private void QuestionsSaveButton_Click(object sender, RoutedEventArgs e)
         {
-            saveQuestions();
+            try
+            {
+                saveQuestions();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -251,9 +292,9 @@ namespace Quiz
             loadConfig();
             try
             {
-                loadAnswers(this.answers);
-                refreshAnswersListBox(this.answers);
-                this.questions = loadQuestions();
+                if(loadAnswers())
+                    this.questions = loadQuestions();                
+                refreshAnswersListBox(this.answers);                
                 refreshQuestionsListBox();
             }
             catch (WebException ex)
@@ -271,7 +312,7 @@ namespace Quiz
                 Answer answer = new Answer(System.Guid.NewGuid().ToString(), answerStr);
                 answerList.Add(answer);
                 saveAnswers(answerList);
-                loadAnswers(this.answers);
+                loadAnswers();
                 refreshAnswersListBox(this.answers);
             }
         }
@@ -306,21 +347,18 @@ namespace Quiz
                                 this.host = value;
                         }
                     }
+                    sr.Close();
                 }
                 else
                 {
-                    this.port = "8080";
-                    this.host = "localhost";
+                    this.port = "8181";
+                    this.host = "82.200.165.76";
                 }
             }
-            catch (FileNotFoundException ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Config file not found!");
-            }
-            finally
-            {
-                sr.Close();
-            }
+                //System.Windows.MessageBox.Show("Config file not found!");
+            }            
         }
 
         public XmlDocument answerListToXml(List<Answer> answerList)
@@ -362,7 +400,7 @@ namespace Quiz
             return doc;
         }
 
-        private void saveAnswers(List<Answer> answerList)
+        private bool saveAnswers(List<Answer> answerList)
         {
             WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/AddAnswer.aspx");
             request.ContentType = "text/xml";
@@ -375,14 +413,23 @@ namespace Quiz
             sw.Close();
             tx.Close();
             byte[] bytes = Encoding.UTF8.GetBytes(str);
-            using (var newStream = request.GetRequestStream())
+            try
             {
-                newStream.Write(bytes, 0, bytes.Length);
-                newStream.Close();
-            }
+                using (var newStream = request.GetRequestStream())
+                {
+                    newStream.Write(bytes, 0, bytes.Length);
+                    newStream.Close();
+                }
 
-            WebResponse response = request.GetResponse();
-            response.Close();
+                WebResponse response = request.GetResponse();
+                response.Close();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+                return false;
+            }
+            return true;
         }
 
 
@@ -393,33 +440,61 @@ namespace Quiz
             {
                 string id = ((Answer)this.AnswersList.SelectedItem).id;
                 removeAnswer(id);
-                loadAnswers(this.answers);
+                loadAnswers();
                 refreshAnswersListBox(this.answers);
             }
         }
         private void removeAnswer(string id)
         {
-            WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/RemoveAnswer.aspx?id=" + id);
-            request.GetResponse();
+            try
+            {
+                WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/RemoveAnswer.aspx?id=" + id);
+                request.GetResponse();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
         }
 
         private void MenuItem_Click_Stop(object sender, RoutedEventArgs e)
         {
-            WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/ActivateQuiz.aspx?p=0");
-            request.GetResponse();
+            try
+            {
+                WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/ActivateQuiz.aspx?p=0");
+                request.GetResponse();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
         }
 
         private void MenuItem_Click_Start(object sender, RoutedEventArgs e)
         {
-            WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/ActivateQuiz.aspx?p=1");
-            request.GetResponse();
+            try
+            {
+                WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/ActivateQuiz.aspx?p=1");
+                request.GetResponse();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
         }
 
         private void MenuItem_Click_Save(object sender, RoutedEventArgs e)
         {
-            saveQuestions();
-            WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/SaveQuiz.aspx");
-            request.GetResponse();
+            try
+            {
+                saveQuestions();
+                WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/SaveQuiz.aspx");
+                request.GetResponse();
+            }
+            catch (Exception ex) 
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
@@ -436,7 +511,7 @@ namespace Quiz
                     WebRequest request = WebRequest.Create("http://" + h + ":" + p + "/Default.aspx");
                     request.GetResponse();
                 }
-                catch (WebException ex)
+                catch (Exception ex)
                 {
                     System.Windows.MessageBox.Show("No connection!");
                     return;
@@ -444,10 +519,13 @@ namespace Quiz
                 this.port = p;
                 this.host = h;
 
-                loadAnswers(this.answers);
-                refreshAnswersListBox(this.answers);
-                this.questions = loadQuestions();
+                if (loadAnswers())
+                    this.questions = loadQuestions();
+                //else
+                //    this.questions.Clear();
+                refreshAnswersListBox(this.answers);                
                 refreshQuestionsListBox();
+
             }
         }
 
@@ -461,28 +539,62 @@ namespace Quiz
                 List<Question> loadedQuestions = new List<Question>();
                 XmlDocument xmlDoc = new XmlDocument();
                 WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/getParticipants.aspx");
-                WebResponse response = request.GetResponse();
-                xmlDoc.Load(response.GetResponseStream());
-
-                if (!File.Exists(path + @"\loaded.xml"))
+                try
                 {
-                    StreamWriter sw = File.CreateText(path + @"\loaded.xml");
-                    sw.Close();
-                    XmlTextWriter textWritter = new XmlTextWriter(path + @"\loaded.xml", System.Text.Encoding.UTF8);
-                    textWritter.WriteStartDocument();
-                    textWritter.WriteStartElement("body");
-                    textWritter.WriteEndElement();
-                    textWritter.Close();
+                    WebResponse response = request.GetResponse();
+                    xmlDoc.Load(response.GetResponseStream());
+
+                    if (!File.Exists(path + @"\loaded.xml"))
+                    {
+                        StreamWriter sw = File.CreateText(path + @"\loaded.xml");
+                        sw.Close();
+                        XmlTextWriter textWritter = new XmlTextWriter(path + @"\loaded.xml", System.Text.Encoding.UTF8);
+                        textWritter.WriteStartDocument();
+                        textWritter.WriteStartElement("body");
+                        textWritter.WriteEndElement();
+                        textWritter.Close();
+                    }
+                    xmlDoc.Save(path + @"\loaded.xml");
                 }
-                xmlDoc.Save(path + @"\loaded.xml");
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
             }
         }
 
         private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            saveQuestions();
-            WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/SaveQuiz.aspx");
-            request.GetResponse();
+            try
+            {
+                saveQuestions();
+                WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/SaveQuiz.aspx");
+                request.GetResponse();
+            }
+            catch (Exception ex)
+            {
+                //System.Windows.MessageBox.Show(ex.Message);
+                string msg = ex.Message + "\nClose without saving?";
+                MessageBoxResult result =
+                  MessageBox.Show(
+                    msg,
+                    "Data App",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    // If user doesn't want to close, cancel closure
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void refreshImages() 
+        {
+            foreach (QuestionControl qc in QuestionsList.Items) 
+            {
+                //qc.QuestionImage.
+            }
         }
     }
     class Participant
