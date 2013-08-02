@@ -33,6 +33,7 @@ namespace Quiz
         List<Answer> answers = null;
         List<Participant> participants = null;
         List<Question> questions = null;
+        string info = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -40,6 +41,7 @@ namespace Quiz
             this.participants = new List<Participant>();
             this.questions = new List<Question>();
             this.ParticipantsList.ItemsSource = this.participants;
+            this.info = "The prize draw ... See you there!";
         }
 
         private void LoadAnswersList_Click(object sender, RoutedEventArgs e)
@@ -184,6 +186,9 @@ namespace Quiz
             {
                 WebResponse response = request.GetResponse();
                 xmlDoc.Load(response.GetResponseStream());
+                if (xmlDoc.DocumentElement.GetAttribute("info")!=null)
+                    if (!string.IsNullOrEmpty(xmlDoc.DocumentElement.GetAttribute("info")))
+                        this.info = xmlDoc.DocumentElement.GetAttribute("info");
                 foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
                 {
                     Question question = new Question();
@@ -380,6 +385,7 @@ namespace Quiz
         {
             XmlDocument doc = new XmlDocument();
             XmlElement root = doc.CreateElement("body");
+            root.SetAttribute("info", this.info);
             foreach (QuestionControl qc in QuestionsList.Items)
             {
                 qc.saveQuestion();
@@ -594,6 +600,17 @@ namespace Quiz
             foreach (QuestionControl qc in QuestionsList.Items) 
             {
                 //qc.QuestionImage.
+            }
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            QuizAdminPanel.InfoWindow infoWindow = new QuizAdminPanel.InfoWindow(this.info);
+            infoWindow.Owner = this;
+            Nullable<bool> result = infoWindow.ShowDialog();
+            if (result == true)
+            {
+                this.info = infoWindow.InfoTextBox.Text;
             }
         }
     }

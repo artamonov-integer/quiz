@@ -15,6 +15,7 @@
             </MenuItem> 
             <MenuItem Header="Settings">
                 <MenuItem Header="Connect settings" Click="MenuItem_Click_1"/>
+                <MenuItem Header="Info" Click="MenuItem_Click_2"/>
             </MenuItem>
         </Menu>
         <TabControl Grid.Row="1">

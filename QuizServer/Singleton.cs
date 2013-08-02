@@ -89,7 +89,7 @@ namespace QuizServer
 
                 xmlParticipants = XmlStringConverter.convertStringToXml(participants);
                 xmlAnswers = XmlStringConverter.convertStringToXml(answers);
-                xmlQuestions = XmlStringConverter.convertStringToXml(questions);
+                xmlQuestions = XmlStringConverter.convertStringToXml(questions);                
 
             }
             catch (FileNotFoundException e) { }
