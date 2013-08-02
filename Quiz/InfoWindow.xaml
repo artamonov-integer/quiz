@@ -4,7 +4,7 @@
         Title="Info" Height="360" Width="450">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <TextBox Name="InfoTextBox" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="300" MaxWidth="400" MinHeight="300" MinWidth="400"/>
+            <TextBox Name="InfoTextBox" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="300" MaxWidth="400" MinHeight="300" MinWidth="400"/>
             <Button Name="OkBtn" Content="OK" Margin="3" Width="100" Click="OkBtn_Click"/>
         </StackPanel>        
     </Grid>
