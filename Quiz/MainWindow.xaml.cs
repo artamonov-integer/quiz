@@ -611,6 +611,7 @@ namespace Quiz
             if (result == true)
             {
                 this.info = infoWindow.InfoTextBox.Text;
+                saveQuestions();
             }
         }
     }
