@@ -86,6 +86,7 @@
                         <Button Name="LoadAnswersList" Content="Load From File" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="LoadAnswersList_Click"/>
                         <Button Name="AddAnswerButton" Content="Add answer" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="AddAnswerButtom_Click"/>
                         <Button Name="RemoveAnswerButton" Content="Remove answer" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="RemoveAnswerButtom_Click"/>
+                        <Button Name="RemoveAllAnswerButton" Content="Remove all answers" Height="20" Width="110" HorizontalAlignment="Left" Margin="2" Click="RemoveAllAnswerButtom_Click"/>
                         <TextBox Name="AnswerTextBox" Height="20" Width="200" KeyUp="AnswerTextBox_KeyUp"/>
                         <Image Name="TestImage" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Height="20" Width="20"/>
                     </StackPanel>

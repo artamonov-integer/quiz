@@ -614,6 +614,31 @@ namespace Quiz
                 saveQuestions();
             }
         }
+
+        private void RemoveAllAnswerButtom_Click(object sender, RoutedEventArgs e)
+        {
+            string msg = "Remove all answers?";
+            MessageBoxResult result =
+                 MessageBox.Show(
+                   msg,
+                   "Data App",
+                   MessageBoxButton.YesNo,
+                   MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/RemoveAllAnswers.aspx");
+                    request.GetResponse();
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+                loadAnswers();
+                refreshAnswersListBox(this.answers);
+            }            
+        }
     }
     class Participant
     {

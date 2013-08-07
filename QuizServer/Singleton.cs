@@ -28,7 +28,7 @@ namespace QuizServer
         private Singleton()
         {
             RecurceAccess(path);
-            isActive = false;
+            isActive = true;
             StreamReader sr = null;
             StreamWriter sw = null;
             try
