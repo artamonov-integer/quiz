@@ -356,13 +356,32 @@ namespace Quiz
                 }
                 else
                 {
-                    this.port = "8181";
-                    this.host = "82.200.165.76";
+                    this.port = "8080";
+                    this.host = "localhost";
                 }
             }
             catch (Exception ex)
             {
                 //System.Windows.MessageBox.Show("Config file not found!");
+            }            
+        }
+
+        private void saveConfig() 
+        {
+            StreamWriter sw = null;
+            try
+            {
+                //if (File.Exists("config.txt"))
+                {
+                    sw = new StreamWriter("config.txt");
+                    sw.WriteLine("port="+this.port);
+                    sw.WriteLine("host=" + this.host); 
+                    sw.Close();
+                }                
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Config not save!");
             }            
         }
 
@@ -531,7 +550,7 @@ namespace Quiz
                 //    this.questions.Clear();
                 refreshAnswersListBox(this.answers);                
                 refreshQuestionsListBox();
-
+                saveConfig();
             }
         }
 
@@ -576,6 +595,7 @@ namespace Quiz
                 saveQuestions();
                 WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/SaveQuiz.aspx");
                 request.GetResponse();
+                //saveConfig(); 
             }
             catch (Exception ex)
             {
