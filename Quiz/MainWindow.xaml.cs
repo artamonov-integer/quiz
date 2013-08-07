@@ -19,6 +19,8 @@ using System.Net;
 using System.Drawing;
 using System.Collections.Specialized;
 using System.Drawing.Imaging;
+//using Excel = Microsoft.Office.Interop.Excel;
+
 //using System.Windows.Forms;
 
 namespace Quiz
@@ -34,6 +36,11 @@ namespace Quiz
         List<Participant> participants = null;
         List<Question> questions = null;
         string info = null;
+
+        //private Excel.Application app = null;
+        //private Excel.Workbook workbook = null;
+        //private Excel.Worksheet worksheet = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -167,7 +174,7 @@ namespace Quiz
                             answer.content = attr.Value;
                     }
                     this.answers.Add(answer);
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -186,7 +193,7 @@ namespace Quiz
             {
                 WebResponse response = request.GetResponse();
                 xmlDoc.Load(response.GetResponseStream());
-                if (xmlDoc.DocumentElement.GetAttribute("info")!=null)
+                if (xmlDoc.DocumentElement.GetAttribute("info") != null)
                     if (!string.IsNullOrEmpty(xmlDoc.DocumentElement.GetAttribute("info")))
                         this.info = xmlDoc.DocumentElement.GetAttribute("info");
                 foreach (XmlNode table in xmlDoc.DocumentElement.ChildNodes)
@@ -254,7 +261,7 @@ namespace Quiz
             }
             //try
             //{
-                request.GetResponse();
+            request.GetResponse();
             //}
             //catch (Exception ex)
             //{
@@ -297,9 +304,9 @@ namespace Quiz
             loadConfig();
             try
             {
-                if(loadAnswers())
-                    this.questions = loadQuestions();                
-                refreshAnswersListBox(this.answers);                
+                if (loadAnswers())
+                    this.questions = loadQuestions();
+                refreshAnswersListBox(this.answers);
                 refreshQuestionsListBox();
             }
             catch (WebException ex)
@@ -363,10 +370,10 @@ namespace Quiz
             catch (Exception ex)
             {
                 //System.Windows.MessageBox.Show("Config file not found!");
-            }            
+            }
         }
 
-        private void saveConfig() 
+        private void saveConfig()
         {
             StreamWriter sw = null;
             try
@@ -374,15 +381,15 @@ namespace Quiz
                 //if (File.Exists("config.txt"))
                 {
                     sw = new StreamWriter("config.txt");
-                    sw.WriteLine("port="+this.port);
-                    sw.WriteLine("host=" + this.host); 
+                    sw.WriteLine("port=" + this.port);
+                    sw.WriteLine("host=" + this.host);
                     sw.Close();
-                }                
+                }
             }
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show("Config not save!");
-            }            
+            }
         }
 
         public XmlDocument answerListToXml(List<Answer> answerList)
@@ -516,7 +523,7 @@ namespace Quiz
                 WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/SaveQuiz.aspx");
                 request.GetResponse();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 System.Windows.MessageBox.Show(ex.Message);
             }
@@ -548,7 +555,7 @@ namespace Quiz
                     this.questions = loadQuestions();
                 //else
                 //    this.questions.Clear();
-                refreshAnswersListBox(this.answers);                
+                refreshAnswersListBox(this.answers);
                 refreshQuestionsListBox();
                 saveConfig();
             }
@@ -615,9 +622,9 @@ namespace Quiz
             }
         }
 
-        private void refreshImages() 
+        private void refreshImages()
         {
-            foreach (QuestionControl qc in QuestionsList.Items) 
+            foreach (QuestionControl qc in QuestionsList.Items)
             {
                 //qc.QuestionImage.
             }
@@ -657,7 +664,61 @@ namespace Quiz
                 }
                 loadAnswers();
                 refreshAnswersListBox(this.answers);
-            }            
+            }
+        }
+
+        private void SaveXlsParticipantsButton_Click(object sender, RoutedEventArgs e)
+        {
+            //Workbook book = null;
+            saveXlsPartisipants();
+
+        }
+        public void saveXlsPartisipants()
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                string path = dialog.SelectedPath;
+                this.participants = getParticipantList();
+                refreshParticipantsListBox(participants);
+
+                string name = path + @"\participants";
+                string extention = ".xls";
+                string fullName = name+extention;
+                int version = 1;
+                while (File.Exists(fullName)) 
+                {
+                    fullName = name + "(" + version.ToString() + ")" + extention;
+                    version++;
+                }
+
+                try
+                {
+                    FileStream stream = new FileStream(fullName, FileMode.OpenOrCreate);
+                    ExcelWriter writer = new ExcelWriter(stream);
+                    writer.BeginWrite();
+                    writer.WriteCell(0, 0, "Name");
+                    writer.WriteCell(0, 1, "Organization");
+                    writer.WriteCell(0, 2, "Mail");
+                    writer.WriteCell(0, 3, "Points");
+                    int rowNum = 1;
+                    foreach (Participant p in this.participants)
+                    {
+                        writer.WriteCell(rowNum, 0, p.Name);
+                        writer.WriteCell(rowNum, 1, p.Login);
+                        writer.WriteCell(rowNum, 2, p.Mail);
+                        writer.WriteCell(rowNum, 3, p.Points);
+                        rowNum++;
+                    }
+                    writer.EndWrite();
+                    stream.Close();
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+            }
         }
     }
     class Participant
