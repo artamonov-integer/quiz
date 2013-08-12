@@ -363,8 +363,8 @@ namespace Quiz
                 }
                 else
                 {
-                    this.port = "8080";
-                    this.host = "localhost";
+                    this.port = "8181";
+                    this.host = "82.200.165.76";
                 }
             }
             catch (Exception ex)
@@ -687,7 +687,7 @@ namespace Quiz
                 string extention = ".xls";
                 string fullName = name+extention;
                 int version = 1;
-                while (File.Exists(fullName)) 
+                while (File.Exists(fullName))
                 {
                     fullName = name + "(" + version.ToString() + ")" + extention;
                     version++;
@@ -718,6 +718,31 @@ namespace Quiz
                 {
                     System.Windows.MessageBox.Show(ex.Message);
                 }
+            }
+        }
+
+        private void RemoveAllParticipantsButtom_Click(object sender, RoutedEventArgs e)
+        {
+            string msg = "Remove all participants?";
+            MessageBoxResult result =
+                 MessageBox.Show(
+                   msg,
+                   "Data App",
+                   MessageBoxButton.YesNo,
+                   MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/RemoveAllParticipants.aspx");
+                    request.GetResponse();
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+                this.participants = getParticipantList();
+                refreshParticipantsListBox(participants);
             }
         }
     }

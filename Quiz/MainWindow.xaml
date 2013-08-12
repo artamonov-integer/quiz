@@ -50,6 +50,7 @@
                         <Button Name="RefreshParticipantsButton" Content="Refresh" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="RefreshParticipantsButton_Click"/>
                         <Button Name="SaveParticipantsButton" Content="Save to file" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="SaveParticipantsButton_Click"/>
                         <Button Name="SaveXlsParticipantsButton" Content="Save to xls" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="SaveXlsParticipantsButton_Click"/>
+                        <Button Name="RemovePartisipantsButton" Content="Delete all" Height="20" Width="100" HorizontalAlignment="Left" Margin="2" Click="RemoveAllParticipantsButtom_Click"/>
                     </StackPanel>
                     <!--<ListBox Name="ParticipantsList" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="1"/>-->
                     <ListView Name="ParticipantsList" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="1">

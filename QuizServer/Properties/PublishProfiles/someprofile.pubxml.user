@@ -20,7 +20,7 @@
       <publishTime>07/23/2013 16:52:58</publishTime>
     </File>
     <File Include="bin/QuizServer.dll">
-      <publishTime>08/07/2013 14:17:28</publishTime>
+      <publishTime>08/12/2013 11:22:06</publishTime>
     </File>
     <File Include="Default.aspx">
       <publishTime>07/23/2013 16:52:58</publishTime>
@@ -42,6 +42,9 @@
     </File>
     <File Include="RemoveAllAnswers.aspx">
       <publishTime>08/07/2013 13:57:03</publishTime>
+    </File>
+    <File Include="RemoveAllParticipants.aspx">
+      <publishTime>08/12/2013 11:06:52</publishTime>
     </File>
     <File Include="RemoveAnswer.aspx">
       <publishTime>07/23/2013 16:53:01</publishTime>
@@ -65,7 +68,7 @@
       <publishTime>07/23/2013 16:53:01</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/07/2013 17:36:17</publishTime>
+      <publishTime>08/12/2013 11:22:07</publishTime>
     </File>
   </ItemGroup>
 </Project>

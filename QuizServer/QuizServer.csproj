@@ -68,6 +68,7 @@
     <Content Include="GetQuestions.aspx" />
     <Content Include="getQuestionsForAdmin.aspx" />
     <Content Include="RemoveAllAnswers.aspx" />
+    <Content Include="RemoveAllParticipants.aspx" />
     <Content Include="RemoveAnswer.aspx" />
     <Content Include="SaveImage.aspx" />
     <Content Include="SaveQuestions.aspx" />
@@ -148,6 +149,13 @@
     </Compile>
     <Compile Include="RemoveAllAnswers.aspx.designer.cs">
       <DependentUpon>RemoveAllAnswers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RemoveAllParticipants.aspx.cs">
+      <DependentUpon>RemoveAllParticipants.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RemoveAllParticipants.aspx.designer.cs">
+      <DependentUpon>RemoveAllParticipants.aspx</DependentUpon>
     </Compile>
     <Compile Include="RemoveAnswer.aspx.cs">
       <DependentUpon>RemoveAnswer.aspx</DependentUpon>
