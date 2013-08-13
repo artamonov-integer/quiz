@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace QuizServer
 {
@@ -16,7 +18,17 @@ namespace QuizServer
             if (sg.isActive)
             {
                 Response.ContentType = "text/xml";
-                Response.Write(sg.questions);
+                var xdoc = XDocument.Parse(sg.questions);
+                var xQuestions = xdoc.Root.Elements("question").ToList();
+                xQuestions.ForEach(x => x.Remove());
+                var rnd = new Random();
+                while(xQuestions.Any())
+                {
+                    var elementNumber = rnd.Next(xQuestions.Count());
+                    xdoc.Root.Add(xQuestions[elementNumber]);
+                    xQuestions.RemoveAt(elementNumber);
+                }
+                Response.Write(xdoc.ToString());
             }
             else
             {

@@ -61,16 +61,29 @@ namespace Quiz
             if (result == true)
             {
                 List<Answer> answerList = new List<Answer>();
+
+                //List<string> answersStr = new List<string>();
+
                 string filename = dlg.FileName;
                 StreamReader sr = new StreamReader(filename);
                 string answerStr = "";
                 while (!sr.EndOfStream)
                 {
                     answerStr = sr.ReadLine();
+                    //answersStr.Add(answerStr);
+
                     Answer answer = new Answer(System.Guid.NewGuid().ToString(), answerStr);
                     answerList.Add(answer);
                 }
                 sr.Close();
+                /*List<string> filterList = filterAnswerList(answersStr);
+                StreamWriter sw = new StreamWriter("filter.txt");
+                foreach (string s in filterList)
+                {
+                    sw.WriteLine(s);
+                }
+                sw.Close();*/
+
                 saveAnswers(answerList);
                 loadAnswers();
                 refreshAnswersListBox(this.answers);
@@ -657,6 +670,13 @@ namespace Quiz
                 {
                     WebRequest request = WebRequest.Create("http://" + host + ":" + port + "/RemoveAllAnswers.aspx");
                     request.GetResponse();
+                    /*foreach (QuestionControl qc in QuestionsList.Items)
+                    {
+                        qc.question.answerContent="";
+                        qc.question.answerId = "";
+                        qc.FilterTextAnswer.Text = ""; 
+                    }*/
+
                 }
                 catch (Exception ex)
                 {
@@ -685,7 +705,7 @@ namespace Quiz
 
                 string name = path + @"\participants";
                 string extention = ".xls";
-                string fullName = name+extention;
+                string fullName = name + extention;
                 int version = 1;
                 while (File.Exists(fullName))
                 {
@@ -744,6 +764,57 @@ namespace Quiz
                 this.participants = getParticipantList();
                 refreshParticipantsListBox(participants);
             }
+        }
+
+        private List<string> filterAnswerList(List<string> answers)
+        {
+            List<string> newAnswers = new List<string>();
+
+            string curAnswer = answers[0];
+            newAnswers.Add(curAnswer);
+            foreach (string answer in answers)
+            {
+                if (!curAnswer.Equals(answer))
+                {
+                    //int index = answer.IndexOf(':');
+                    //if (index < 0 || (index > 0 && !curAnswer.Equals(answer.Substring(0, index).Trim())))
+                    if (answer.ToUpper().IndexOf(curAnswer.ToUpper()) < 0)
+                    {
+                        newAnswers.Add(answer);
+                        curAnswer = answer;
+                    }
+                }
+            }
+
+            answers.Clear();            
+
+            foreach (string answer in newAnswers)
+            {
+                int index = answer.IndexOf(':');
+                if (index > 0)
+                {
+                    answers.Add(answer.Substring(0, index).Trim());
+                }
+                else 
+                {
+                    answers.Add(answer);
+                }
+            }
+
+            newAnswers.Clear();
+            curAnswer = answers[0];
+            newAnswers.Add(curAnswer);
+            foreach (string answer in answers)
+            {
+                if (!curAnswer.Equals(answer))
+                {
+                    newAnswers.Add(answer);
+                    curAnswer = answer;                    
+                }
+
+            }
+
+            return newAnswers;
         }
     }
     class Participant
