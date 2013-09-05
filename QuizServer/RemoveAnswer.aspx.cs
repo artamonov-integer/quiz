@@ -19,6 +19,8 @@ namespace QuizServer
             {
                 //XDocument x = new XDocument();
                 //x.Elements().Where(xx => xx.Attribute("id").Value == id).Remove();
+                if (sg.path == null)
+                    sg.updateSingleton(Request.PhysicalApplicationPath);
                 XmlDocument xmlAnswers = sg.xmlAnswers;
                 foreach (XmlElement answer in xmlAnswers.DocumentElement.ChildNodes)
                 {

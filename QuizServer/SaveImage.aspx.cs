@@ -11,7 +11,7 @@ namespace QuizServer
 {
     public partial class SaveImage : System.Web.UI.Page
     {
-        Singleton sg = Singleton.Instance;
+        //Singleton sg = Singleton.Instance;
         protected void Page_Load(object sender, EventArgs e)
         {
             string fileName = Request.QueryString["n"];
@@ -24,7 +24,7 @@ namespace QuizServer
             int bytesRead = Request.InputStream.Read(buffer, 0, buffer.Length);
             if (bytesRead > 0)
             {
-                string path = sg.getPath() + @"\images\";
+                string path = Request.PhysicalApplicationPath + @"\images\";
                 string fullName = path + fileName;
                 DirectoryInfo uploads = new DirectoryInfo(path);
                 if (!uploads.Exists)

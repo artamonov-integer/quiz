@@ -12,6 +12,8 @@ namespace QuizServer
         Singleton sg = Singleton.Instance;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (sg.path == null)
+                sg.updateSingleton(Request.PhysicalApplicationPath);
             sg.xmlParticipants.DocumentElement.RemoveAll();
             sg.participants = XmlStringConverter.convertXmlToString(sg.xmlParticipants);
         }

@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GetQuestionsVersion.aspx.cs" Inherits="QuizServer.GetQuestionVersion" %>

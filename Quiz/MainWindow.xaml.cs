@@ -423,6 +423,8 @@ namespace Quiz
         private XmlDocument questionsToXml()
         {
             XmlDocument doc = new XmlDocument();
+            XmlDeclaration declaration = doc.CreateXmlDeclaration("1.0", "utf-8", "no");
+
             XmlElement root = doc.CreateElement("body");
             root.SetAttribute("info", this.info);
             foreach (QuestionControl qc in QuestionsList.Items)
@@ -442,6 +444,7 @@ namespace Quiz
                 }
             }
             doc.AppendChild(root);
+            doc.InsertBefore(declaration, root);            
             return doc;
         }
 

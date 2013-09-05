@@ -19,6 +19,8 @@ namespace QuizServer
             string str = enc.GetString(bytes);
             if (!string.IsNullOrEmpty(str))
             {
+                if (sg.path == null)
+                    sg.updateSingleton(Request.PhysicalApplicationPath);
                 XmlDocument newXmlAnswers = XmlStringConverter.convertStringToXml(str);
                 XmlDocument xmlAnswers = sg.xmlAnswers;
 

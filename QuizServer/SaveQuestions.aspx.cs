@@ -19,12 +19,15 @@ namespace QuizServer
             string str = enc.GetString(bytes);
             if (!string.IsNullOrEmpty(str))
             {
-                str = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" + str;
+                //str = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" + str;
                 XmlDocument newXmlQuestions = XmlStringConverter.convertStringToXml(str);
                 if (newXmlQuestions != null)
                 {
+                    if (sg.path == null)
+                        sg.updateSingleton(Request.PhysicalApplicationPath);
                     sg.xmlQuestions = newXmlQuestions;
                     sg.questions = XmlStringConverter.convertXmlToString(newXmlQuestions);
+                    sg.questionsVersion++;
                 }
             }
         }

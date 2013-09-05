@@ -61,15 +61,13 @@
     <Content Include="ActivateQuiz.aspx" />
     <Content Include="AddAnswer.aspx" />
     <Content Include="AddParticipants.aspx" />
-    <Content Include="data\questions.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Default.aspx" />
     <Content Include="GetAnswers.aspx" />
     <Content Include="GetImage.aspx" />
     <Content Include="GetParticipants.aspx" />
     <Content Include="GetQuestions.aspx" />
     <Content Include="getQuestionsForAdmin.aspx" />
+    <Content Include="GetQuestionsVersion.aspx" />
     <Content Include="RemoveAllAnswers.aspx" />
     <Content Include="RemoveAllParticipants.aspx" />
     <Content Include="RemoveAnswer.aspx" />
@@ -145,6 +143,13 @@
     <Compile Include="getQuestionsForAdmin.aspx.designer.cs">
       <DependentUpon>getQuestionsForAdmin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GetQuestionsVersion.aspx.cs">
+      <DependentUpon>GetQuestionsVersion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetQuestionsVersion.aspx.designer.cs">
+      <DependentUpon>GetQuestionsVersion.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoveAllAnswers.aspx.cs">
       <DependentUpon>RemoveAllAnswers.aspx</DependentUpon>
@@ -193,6 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="data\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\someprofile.pubxml" />

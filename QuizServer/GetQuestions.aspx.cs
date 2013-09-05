@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -15,6 +14,8 @@ namespace QuizServer
         Singleton sg = Singleton.Instance;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (sg.path == null)
+                sg.updateSingleton(Request.PhysicalApplicationPath);
             if (sg.isActive)
             {
                 Response.ContentType = "text/xml";

@@ -114,8 +114,9 @@ namespace Quiz
                                 response.Close();
 
                                 ImageSourceConverter converter = new ImageSourceConverter();
-                                this.QuestionImage.Source = (ImageSource)converter.ConvertFromString("http://" + host + ":" + port + "/GetImage.aspx?n=" + this.id + extention);
-                                this.question.image = this.id + extention;
+                                String imageStr = "http://" + host + ":" + port + "/images/" + this.id + extention;
+                                this.QuestionImage.Source = (ImageSource)converter.ConvertFromString(imageStr);
+                                this.question.image = imageStr;
                             }
                             catch (Exception exc) {
                                 this.QuestionTextBox.Text = exc.ToString();
@@ -148,7 +149,7 @@ namespace Quiz
             ImageSourceConverter converter = new ImageSourceConverter();
             try
             {
-                this.QuestionImage.Source = (ImageSource)converter.ConvertFromString("http://" + host + ":" + port + "/GetImage.aspx?n=" + question.image);
+                this.QuestionImage.Source = (ImageSource)converter.ConvertFromString(question.image);
             }
             catch (WebException ex)
             {

@@ -10,11 +10,11 @@ namespace QuizServer
 {
     public partial class GetImage : System.Web.UI.Page
     {
-        Singleton sg = Singleton.Instance;
+        //Singleton sg = Singleton.Instance;
         protected void Page_Load(object sender, EventArgs e)
         {            
-            string fileName = Request.QueryString["n"];
-            string path = sg.getPath() + @"\images\";
+            /*string fileName = Request.QueryString["n"];
+            string path = Request.PhysicalApplicationPath + @"\images\";
             string fullName = path + fileName;
             DirectoryInfo uploads = new DirectoryInfo(path);
             if (!uploads.Exists)
@@ -25,7 +25,7 @@ namespace QuizServer
                 Response.WriteFile(fullName);
             }
             else
-                Response.Write("File not found");
+                Response.Write("File not found");*/
         }
     }
 }

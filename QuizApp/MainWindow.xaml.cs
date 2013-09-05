@@ -258,7 +258,7 @@ namespace QuizApp
             if (!string.IsNullOrEmpty(this.curQuestion.image))
             {
                 ImageSourceConverter converter = new ImageSourceConverter();
-                this.QuestionImage.Source = (ImageSource)converter.ConvertFromString("http://" + host + ":" + port + "/GetImage.aspx?n=" + this.curQuestion.image);
+                this.QuestionImage.Source = (ImageSource)converter.ConvertFromString(this.curQuestion.image);
             }
         }
 

@@ -13,6 +13,8 @@ namespace QuizServer
         Singleton sg = Singleton.Instance;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (sg.path == null)
+                sg.updateSingleton(Request.PhysicalApplicationPath);
             string isActive = Request.QueryString["p"];
             Response.ContentType = "text/xml";
             Response.ContentEncoding = new UTF8Encoding();

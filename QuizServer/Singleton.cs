@@ -9,16 +9,15 @@ namespace QuizServer
 {
     public class Singleton
     {
-        private string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\data\";
-        //private string path = Environment.CurrentDirectory + @"\data\";
-        //private bool b =  RecurceAccess(Environment.CurrentDirectory);
-        public string answers = "";
-        public string questions = "";
-        public string participants = "";
+        public String path;
+        public string answers;
+        public string questions;
+        public string participants;
         public bool isActive;
         public XmlDocument xmlParticipants;
         public XmlDocument xmlAnswers;
         public XmlDocument xmlQuestions;
+        public int questionsVersion;
 
         static Singleton()
         {
@@ -27,6 +26,13 @@ namespace QuizServer
         }
         private Singleton()
         {
+            isActive = true;
+            path = null;
+            questionsVersion = 0;
+        }
+        public void updateSingleton(String _path)
+        {
+            this.path = _path+@"\data\";
             RecurceAccess(path);
             isActive = true;
             StreamReader sr = null;
@@ -50,7 +56,7 @@ namespace QuizServer
                     sw = File.CreateText(path + "answers.xml");
                     sw.Close();
                     XmlTextWriter textWritter = new XmlTextWriter(path + "answers.xml", System.Text.Encoding.UTF8);
-                    textWritter.WriteStartDocument();
+                    textWritter.WriteStartDocument(false);
                     textWritter.WriteStartElement("body");
                     textWritter.WriteEndElement();
                     textWritter.Close();
@@ -64,7 +70,7 @@ namespace QuizServer
                     sw = File.CreateText(path + "questions.xml");
                     sw.Close();
                     XmlTextWriter textWritter = new XmlTextWriter(path + "questions.xml", System.Text.Encoding.UTF8);
-                    textWritter.WriteStartDocument();
+                    textWritter.WriteStartDocument(false);
                     textWritter.WriteStartElement("body");
                     textWritter.WriteEndElement();
                     textWritter.Close();
@@ -78,7 +84,7 @@ namespace QuizServer
                     sw = File.CreateText(path + "participants.xml");
                     sw.Close();
                     XmlTextWriter textWritter = new XmlTextWriter(path + "participants.xml", System.Text.Encoding.UTF8);
-                    textWritter.WriteStartDocument();
+                    textWritter.WriteStartDocument(false);
                     textWritter.WriteStartElement("body");
                     textWritter.WriteEndElement();
                     textWritter.Close();
@@ -127,40 +133,24 @@ namespace QuizServer
                     RecurceAccess(folders[i]);
                 }
             }
-            catch (Exception e) { 
-                //MessageBox.Show(e.ToString()); 
-            }
+            catch (Exception e) {}
         }
-        //объявляет метод
+
         public static void AddFileSecurity(string fileName, string account,
           FileSystemRights rights, AccessControlType controlType)
         {
 
-            // Get a FileSecurity object that represents the
-            // current security settings.
             FileSecurity fSecurity = File.GetAccessControl(fileName);
-
-            // Add the FileSystemAccessRule to the security settings.
-            fSecurity.AddAccessRule(new FileSystemAccessRule(account,
-                rights, controlType));
-
-            // Set the new access settings.
+            fSecurity.AddAccessRule(new FileSystemAccessRule(account, rights, controlType));
             File.SetAccessControl(fileName, fSecurity);
         }
-        //объявляет метод
+
         public static void AddDirectorySecurity(string fileName, string account,
           FileSystemRights rights, AccessControlType controlType)
         {
 
-            // Get a FileSecurity object that represents the
-            // current security settings.
             DirectorySecurity fSecurity = Directory.GetAccessControl(fileName);
-
-            // Add the FileSystemAccessRule to the security settings.
-            fSecurity.AddAccessRule(new FileSystemAccessRule(account,
-                rights, controlType));
-
-            // Set the new access settings.
+            fSecurity.AddAccessRule(new FileSystemAccessRule(account, rights, controlType));
             Directory.SetAccessControl(fileName, fSecurity);
         }
     }
